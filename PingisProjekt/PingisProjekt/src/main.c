@@ -29,12 +29,27 @@
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #include <asf.h>
+#include "adc.h"
+#include "pwm.h"
+
 
 int main (void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
-
+	
+	sysclk_init();
 	board_init();
-
-	/* Insert application code here, after the board has been initialized. */
+	ioport_init();
+	adc_setup();
+	pwm_setup();
+	
+	ioport_set_pin_dir(CHECK_PIN, IOPORT_DIR_INPUT);
+	ioport_set_pin_dir(PIO_PC22_IDX,IOPORT_DIR_OUTPUT);
+	ioport_set_pin_level(PIO_PC22_IDX,LOW);
+	ioport_set_pin_dir(PIO_PB27_IDX,IOPORT_DIR_OUTPUT);
+	ioport_set_pin_level(PIO_PB27_IDX,HIGH);
+	
+	
+	
+	
+	
 }
