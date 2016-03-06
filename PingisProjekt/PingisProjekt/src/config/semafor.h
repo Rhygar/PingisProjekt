@@ -2,7 +2,7 @@
  * semafor.h
  *
  * Created: 2016-03-06 15:57:58
- *  Author: John Tengvall
+ *  Author: John Tengvall & Andreas Langhammer
  */ 
 
 

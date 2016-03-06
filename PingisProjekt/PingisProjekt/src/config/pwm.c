@@ -2,7 +2,7 @@
  * pwm.c
  *
  * Created: 2016-03-06 13:01:22
- *  Author: John Tengvall
+ *  Author: John Tengvall & Andreas Langhammer
  */ 
 #include <asf.h>
 #include "pwm.h"

@@ -32,6 +32,7 @@
 #include "adc.h"
 #include "pwm.h"
 
+xSemaphoreHandle signal_semafor = 1;
 
 int main (void)
 {
@@ -42,13 +43,16 @@ int main (void)
 	adc_setup();
 	pwm_setup();
 	
-	ioport_set_pin_dir(CHECK_PIN, IOPORT_DIR_INPUT);
 	ioport_set_pin_dir(PIO_PC22_IDX,IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(PIO_PC22_IDX,LOW);
 	ioport_set_pin_dir(PIO_PB27_IDX,IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(PIO_PB27_IDX,HIGH);
 	
+	vSemaphoreCreateBinary(signal_semafor);
 	
+	//Lägg till kod med taskcreate
+	
+	vTaskStartScheduler();
 	
 	
 	
