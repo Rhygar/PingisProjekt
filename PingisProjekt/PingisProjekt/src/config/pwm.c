@@ -4,6 +4,7 @@
  * Created: 2016-03-06 13:01:22
  *  Author: John Tengvall
  */ 
+#include <asf.h>
 #include "pwm.h"
 
 static pwm_channel_t pwm_channel_instance;
