@@ -1,0 +1,63 @@
+function [  ] = main( a )
+%-----------------------------------------------
+% Main program.
+% Handles all communacation between matlab and
+% Arduino Due.
+% Structure so far, Statemachine
+% with states to either send or receive data
+% from the Arduino Due, via serial communication.
+%------------------------------------------------
+
+
+% Att göra:
+% 1 Längst uppe, vad för ut-parameter?
+% 2 kolla i loop (RECEIVE) nedan.
+
+
+
+
+RUNNING = 1;
+SEND = 1;
+RECEIVE = 0;
+flushinput(a);
+ADCindex = 1;
+
+ADCValue = importdata('ADCB4.txt');
+
+% Statemachine used to determine if we should send data or receive data.
+while (RUNNING)
+    % Receive data from arduino
+    while(RECEIVE)
+        
+        %disp('nu e vi innan scan')
+        response = fscanf(a, '%c');
+        %disp('nu e efter scan')
+        disp(['Arduino says: ', response]);
+        
+        if(~isempty(response))
+            RECEIVE = 0;
+            SEND = 1;
+        end
+        % plotting shit
+    end
+    % Send data to arduino
+    while(SEND)
+        %flush serial output buffer before sending.
+        flushoutput(a);
+        while(ADCindex < 101)
+            % number to string
+            str = num2str(ADCValue(ADCindex));
+            %print string from arduina object
+            fprint(a, str);
+            ADCindex = ADCindex + 1;
+            flushoutput(a);
+            
+        end
+        SEND = 0;
+        RECEIVE = 1;
+        
+    end
+end
+end
+
+
