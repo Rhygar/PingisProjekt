@@ -32,7 +32,7 @@
 #include "ad_conv.h"
 #include "pw_mod.h"
 #include "recieveValue.h"
-#include "FreeRTOS.h"
+
 
 xSemaphoreHandle signal_semafor = 1;
 
