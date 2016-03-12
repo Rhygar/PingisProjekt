@@ -5,7 +5,7 @@
  *  Author: John Tengvall & Andreas Langhammer
  */ 
 #include <asf.h>
-#include "recieveValue.h"
+#include "receiveValue.h"
 
 void matlab_values(void)
 {
