@@ -14,7 +14,7 @@ void pwm_setup()
 	/* Enable the specified peripheral clock (PWM clock).
 	   If function returns 0, then we can proceed... */
 	if (pmc_enable_periph_clk(ID_PWM) == 0) {
-		pwm_channel_disable(PWM, PWM_CHANNEL_0);
+
 		pwm_clock_t clock_setting = {
 			.ul_clka = PWM_FREQUENCY * PWM_RESOLUTION,
 			.ul_clkb = 0,
