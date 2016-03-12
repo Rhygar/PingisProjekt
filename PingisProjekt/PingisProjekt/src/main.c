@@ -29,9 +29,10 @@
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #include <asf.h>
-#include "adc.h"
-#include "pwm.h"
-
+#include "ad_conv.h"
+#include "pw_mod.h"
+#include "recieveValue.h"
+#include "FreeRTOSConfig.h"
 xSemaphoreHandle signal_semafor = 1;
 
 int main (void)
@@ -40,7 +41,7 @@ int main (void)
 	sysclk_init();
 	board_init();
 	ioport_init();
-	adc_setup();
+	adc_config();
 	pwm_setup();
 	
 	ioport_set_pin_dir(PIO_PC22_IDX,IOPORT_DIR_OUTPUT);
@@ -49,9 +50,10 @@ int main (void)
 	ioport_set_pin_level(PIO_PB27_IDX,HIGH);
 	
 	vSemaphoreCreateBinary(signal_semafor);
-	
+	matlab_values();
 	//Lägg till kod med taskcreate
-	
+		xTaskCreate(task_valueMatlab, (const signed char * const) "task_valueMatlab", TASK_STACKSIZE, NULL, 2, NULL);
+		xTaskCreate(task_regulator, (const signed char * const) "task_regulator", TASK_STACKSIZE,NULL,2,NULL);
 	vTaskStartScheduler();
 	
 	

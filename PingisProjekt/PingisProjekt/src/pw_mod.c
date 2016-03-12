@@ -5,7 +5,7 @@
  *  Author: John Tengvall & Andreas Langhammer
  */ 
 #include <asf.h>
-#include "pwm.h"
+#include "pw_mod.h"
 
 static pwm_channel_t pwm_channel_instance;
 

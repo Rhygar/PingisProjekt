@@ -6,9 +6,9 @@
  */ 
 #include <asf.h>
 #include "semafor.h"
-#include "adc.h"
+#include "ad_conv.h"
 #include <FreeRTOS.h>
-#include "pwm.h"
+#include "pw_mod.h"
 
 void task_regulator(void *pvParameters)
 {
