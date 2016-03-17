@@ -39,16 +39,17 @@ int main (void)
 	
 	sysclk_init();
 	board_init();
-	ioport_init();
-	adc_setup();
-	pwm_setup();
+	configure_console();
+	//ioport_init();
+	//adc_setup();
+	//pwm_setup();
 	
-	ioport_set_pin_dir(PIO_PC22_IDX,IOPORT_DIR_OUTPUT);
-	ioport_set_pin_level(PIO_PC22_IDX,LOW);
-	ioport_set_pin_dir(PIO_PB27_IDX,IOPORT_DIR_OUTPUT);
-	ioport_set_pin_level(PIO_PB27_IDX,HIGH);
+	//ioport_set_pin_dir(PIO_PC22_IDX,IOPORT_DIR_OUTPUT);
+	//ioport_set_pin_level(PIO_PC22_IDX,LOW);
+	//ioport_set_pin_dir(PIO_PB27_IDX,IOPORT_DIR_OUTPUT);
+	//ioport_set_pin_level(PIO_PB27_IDX,HIGH);
 	
-	vSemaphoreCreateBinary(signal_semafor);
+	//vSemaphoreCreateBinary(signal_semafor);
 	
 	//Lägg till kod med taskcreate
 	
