@@ -52,11 +52,24 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
+// From module: ADC - Analog-to-digital Converter
+#include <adc.h>
+
 // From module: Common SAM compiler driver
 #include <compiler.h>
 #include <status_codes.h>
 
+<<<<<<< HEAD
 // From module: FreeRTOS - Kernel 7.3.0
+=======
+// From module: DACC - Digital-to-Analog Converter
+#include <dacc.h>
+
+// From module: Delay routines
+#include <delay.h>
+
+// From module: FreeRTOS mini Real-Time Kernel
+>>>>>>> origin/master
 #include <FreeRTOS.h>
 #include <FreeRTOS_CLI.h>
 #include <StackMacros.h>
@@ -89,21 +102,33 @@
 #include <pmc.h>
 #include <sleep.h>
 
+// From module: PWM - Pulse Width Modulation
+#include <pwm.h>
+
 // From module: Part identification macros
 #include <parts.h>
 
 // From module: SAM3X startup code
 #include <exceptions.h>
 
+<<<<<<< HEAD
 // From module: SPI - Serial Peripheral Interface
 #include <spi.h>
 
+=======
+>>>>>>> origin/master
 // From module: Standard serial I/O (stdio) - SAM implementation
 #include <stdio_serial.h>
 
 // From module: System Clock Control - SAM3X/A implementation
 #include <sysclk.h>
 
+<<<<<<< HEAD
+=======
+// From module: TC - Timer Counter
+#include <tc.h>
+
+>>>>>>> origin/master
 // From module: UART - Univ. Async Rec/Trans
 #include <uart.h>
 

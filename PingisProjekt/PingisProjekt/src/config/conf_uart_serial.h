@@ -3,7 +3,11 @@
  *
  * \brief Serial USART service configuration.
  *
+<<<<<<< HEAD
  * Copyright (c) 2011-2012 Atmel Corporation. All rights reserved.
+=======
+ * Copyright (c) 2011-2015 Atmel Corporation. All rights reserved.
+>>>>>>> origin/master
  *
  * \asf_license_start
  *
@@ -40,6 +44,12 @@
  * \asf_license_stop
  *
  */
+<<<<<<< HEAD
+=======
+/*
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ */
+>>>>>>> origin/master
 
 #ifndef CONF_USART_SERIAL_H
 #define CONF_USART_SERIAL_H

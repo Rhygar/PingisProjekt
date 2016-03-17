@@ -2,13 +2,32 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+<<<<<<< HEAD
+=======
+src\ad_conv.c
+
+src\ASF\common\services\delay\sam\cycle_counter.c
+
+>>>>>>> origin/master
 src\ASF\common\services\serial\usart_serial.c
 
 src\ASF\common\utils\stdio\read.c
 
 src\ASF\common\utils\stdio\write.c
 
+<<<<<<< HEAD
 src\ASF\sam\drivers\spi\spi.c
+=======
+src\ASF\sam\drivers\adc\adc.c
+
+src\ASF\sam\drivers\adc\adc_sam3u.c
+
+src\ASF\sam\drivers\dacc\dacc.c
+
+src\ASF\sam\drivers\pwm\pwm.c
+
+src\ASF\sam\drivers\tc\tc.c
+>>>>>>> origin/master
 
 src\ASF\sam\drivers\uart\uart.c
 
@@ -16,9 +35,19 @@ src\ASF\sam\drivers\usart\usart.c
 
 src\ASF\thirdparty\freertos\freertos-7.0.0\source\croutine.c
 
+<<<<<<< HEAD
 src\config\adc.c
 
 src\config\regulator.c
+=======
+src\ASF\thirdparty\wireless\addons\sio2host\uart\sio2host.c
+
+src\pw_mod.c
+
+src\receiveValue.c
+
+src\regulator.c
+>>>>>>> origin/master
 
 src\ASF\thirdparty\freertos\freertos-7.0.0\source\list.c
 
@@ -32,8 +61,11 @@ src\ASF\thirdparty\freertos\freertos-7.0.0\source\tasks.c
 
 src\ASF\thirdparty\freertos\freertos-7.0.0\source\timers.c
 
+<<<<<<< HEAD
 src\config\pwm.c
 
+=======
+>>>>>>> origin/master
 src\ASF\common\services\clock\sam3x\sysclk.c
 
 src\ASF\common\utils\interrupt\interrupt_sam_nvic.c

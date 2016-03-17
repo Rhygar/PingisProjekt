@@ -4,7 +4,11 @@
  * \brief System-specific implementation of the \ref _write function used by
  *         the standard library.
  *
+<<<<<<< HEAD
  * Copyright (c) 2009-2012 Atmel Corporation. All rights reserved.
+=======
+ * Copyright (c) 2009-2015 Atmel Corporation. All rights reserved.
+>>>>>>> origin/master
  *
  * \asf_license_start
  *
@@ -41,6 +45,12 @@
  * \asf_license_stop
  *
  */
+<<<<<<< HEAD
+=======
+/*
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ */
+>>>>>>> origin/master
 
 #include "compiler.h"
 
@@ -102,6 +112,7 @@ size_t __write(int handle, const unsigned char *buffer, size_t size)
 _STD_END
 
 
+<<<<<<< HEAD
 #elif (defined(__GNUC__) && !XMEGA)
 
 int _write (int file, char * ptr, int len); // Remove GCC compiler warning
@@ -111,6 +122,15 @@ _write (int file, char * ptr, int len);
 
 int __attribute__((weak))
 _write (int file, char * ptr, int len)
+=======
+#elif (defined(__GNUC__) && !XMEGA && !MEGA)
+
+int __attribute__((weak))
+_write (int file, const char *ptr, int len);
+
+int __attribute__((weak))
+_write (int file, const char *ptr, int len)
+>>>>>>> origin/master
 {
 	int nChars = 0;
 
@@ -127,7 +147,11 @@ _write (int file, char * ptr, int len)
 	return nChars;
 }
 
+<<<<<<< HEAD
 #elif (defined(__GNUC__) && XMEGA)
+=======
+#elif (defined(__GNUC__) && (XMEGA || MEGA))
+>>>>>>> origin/master
 
 int _write (char c, int *f);
 

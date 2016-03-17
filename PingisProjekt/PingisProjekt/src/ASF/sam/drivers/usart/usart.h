@@ -4,7 +4,11 @@
  * \brief Universal Synchronous Asynchronous Receiver Transmitter (USART) driver
  * for SAM.
  *
+<<<<<<< HEAD
  * Copyright (c) 2011-2012 Atmel Corporation. All rights reserved.
+=======
+ * Copyright (c) 2011-2015 Atmel Corporation. All rights reserved.
+>>>>>>> origin/master
  *
  * \asf_license_start
  *
@@ -41,6 +45,12 @@
  * \asf_license_stop
  *
  */
+<<<<<<< HEAD
+=======
+/*
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ */
+>>>>>>> origin/master
 
 #ifndef USART_H_INCLUDED
 #define USART_H_INCLUDED
@@ -79,6 +89,14 @@ extern "C" {
 #define SPI_MODE_2  (SPI_CPOL)
 #define SPI_MODE_3  (SPI_CPOL | SPI_CPHA)
 
+<<<<<<< HEAD
+=======
+/**micro definition for LIN mode of SAMV71*/
+#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
+#define US_MR_USART_MODE_LIN_MASTER  0x0A
+#define US_MR_USART_MODE_LIN_SLAVE   0x0B
+#endif
+>>>>>>> origin/master
 /* Input parameters when initializing RS232 and similar modes. */
 typedef struct {
 	/* Set baud rate of the USART (unused in slave modes). */
@@ -198,11 +216,20 @@ typedef struct {
 } usart_spi_opt_t;
 
 void usart_reset(Usart *p_usart);
+<<<<<<< HEAD
+=======
+uint32_t usart_set_async_baudrate(Usart *p_usart,
+		uint32_t baudrate, uint32_t ul_mck);
+>>>>>>> origin/master
 uint32_t usart_init_rs232(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
 uint32_t usart_init_hw_handshaking(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
+<<<<<<< HEAD
 #if (SAM3S || SAM4S || SAM3U || SAM4L)
+=======
+#if (SAM3S || SAM4S || SAM3U || SAM4L || SAM4E)
+>>>>>>> origin/master
 uint32_t usart_init_modem(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
 #endif
@@ -212,15 +239,37 @@ uint32_t usart_init_sync_slave(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt);
 uint32_t usart_init_rs485(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
+<<<<<<< HEAD
 uint32_t usart_init_irda(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
 uint32_t usart_init_iso7816(Usart *p_usart,
 		const usart_iso7816_opt_t *p_usart_opt, uint32_t ul_mck);
+=======
+#if (!SAMG55 && !SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
+uint32_t usart_init_irda(Usart *p_usart,
+		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
+#endif
+#if (!SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
+uint32_t usart_init_iso7816(Usart *p_usart,
+		const usart_iso7816_opt_t *p_usart_opt, uint32_t ul_mck);
+void usart_reset_iterations(Usart *p_usart);
+void usart_reset_nack(Usart *p_usart);
+uint32_t usart_is_rx_buf_end(Usart *p_usart);
+uint32_t usart_is_tx_buf_end(Usart *p_usart);
+uint32_t usart_is_rx_buf_full(Usart *p_usart);
+uint32_t usart_is_tx_buf_empty(Usart *p_usart);
+uint8_t usart_get_error_number(Usart *p_usart);
+#endif
+>>>>>>> origin/master
 uint32_t usart_init_spi_master(Usart *p_usart,
 		const usart_spi_opt_t *p_usart_opt, uint32_t ul_mck);
 uint32_t usart_init_spi_slave(Usart *p_usart,
 		const usart_spi_opt_t *p_usart_opt);
+<<<<<<< HEAD
 #if (SAM3XA || SAM4L)
+=======
+#if (SAM3XA || SAM4L || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+>>>>>>> origin/master
 uint32_t usart_init_lin_master(Usart *p_usart, uint32_t ul_baudrate,
 		uint32_t ul_mck);
 uint32_t usart_init_lin_slave(Usart *p_usart, uint32_t ul_baudrate,
@@ -244,6 +293,31 @@ void usart_lin_set_tx_identifier(Usart *p_usart, uint8_t uc_id);
 uint8_t usart_lin_read_identifier(Usart *p_usart);
 uint8_t usart_lin_get_data_length(Usart *usart);
 #endif
+<<<<<<< HEAD
+=======
+#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
+uint8_t usart_lin_identifier_send_complete(Usart *usart);
+uint8_t usart_lin_identifier_reception_complete(Usart *usart);
+uint8_t usart_lin_tx_complete(Usart *usart);
+uint32_t usart_init_lon(Usart *p_usart, uint32_t ul_baudrate, uint32_t ul_mck);
+void  usart_lon_set_comm_type(Usart *p_usart, uint8_t uc_type);
+void usart_lon_disable_coll_detection(Usart *p_usart);
+void usart_lon_enable_coll_detection(Usart *p_usart);
+void  usart_lon_set_tcol(Usart *p_usart, uint8_t uc_type);
+void  usart_lon_set_cdtail(Usart *p_usart, uint8_t uc_type);
+void  usart_lon_set_dmam(Usart *p_usart, uint8_t uc_type);
+void  usart_lon_set_beta1_tx_len(Usart *p_usart, uint32_t ul_len);
+void  usart_lon_set_beta1_rx_len(Usart *p_usart, uint32_t ul_len);
+void  usart_lon_set_priority(Usart *p_usart, uint8_t uc_psnb, uint8_t uc_nps);
+void  usart_lon_set_tx_idt(Usart *p_usart, uint32_t ul_time);
+void  usart_lon_set_rx_idt(Usart *p_usart, uint32_t ul_time);
+void  usart_lon_set_pre_len(Usart *p_usart, uint32_t ul_len);
+void  usart_lon_set_data_len(Usart *p_usart, uint8_t uc_len);
+void  usart_lon_set_l2hdr(Usart *p_usart, uint8_t uc_bli, uint8_t uc_altp, uint8_t uc_pb);
+uint32_t usart_lon_is_tx_end(Usart *p_usart);
+uint32_t usart_lon_is_rx_end(Usart *p_usart);
+#endif
+>>>>>>> origin/master
 void usart_enable_tx(Usart *p_usart);
 void usart_disable_tx(Usart *p_usart);
 void usart_reset_tx(Usart *p_usart);
@@ -261,10 +335,15 @@ void usart_start_tx_break(Usart *p_usart);
 void usart_stop_tx_break(Usart *p_usart);
 void usart_start_rx_timeout(Usart *p_usart);
 uint32_t usart_send_address(Usart *p_usart, uint32_t ul_addr);
+<<<<<<< HEAD
 void usart_reset_iterations(Usart *p_usart);
 void usart_reset_nack(Usart *p_usart);
 void usart_restart_rx_timeout(Usart *p_usart);
 #if (SAM3S || SAM4S || SAM3U || SAM4L)
+=======
+void usart_restart_rx_timeout(Usart *p_usart);
+#if (SAM3S || SAM4S || SAM3U || SAM4L || SAM4E)
+>>>>>>> origin/master
 void usart_drive_DTR_pin_low(Usart *p_usart);
 void usart_drive_DTR_pin_high(Usart *p_usart);
 #endif
@@ -275,10 +354,13 @@ void usart_spi_release_chip_select(Usart *p_usart);
 uint32_t usart_is_tx_ready(Usart *p_usart);
 uint32_t usart_is_tx_empty(Usart *p_usart);
 uint32_t usart_is_rx_ready(Usart *p_usart);
+<<<<<<< HEAD
 uint32_t usart_is_rx_buf_end(Usart *p_usart);
 uint32_t usart_is_tx_buf_end(Usart *p_usart);
 uint32_t usart_is_rx_buf_full(Usart *p_usart);
 uint32_t usart_is_tx_buf_empty(Usart *p_usart);
+=======
+>>>>>>> origin/master
 uint32_t usart_write(Usart *p_usart, uint32_t c);
 uint32_t usart_putchar(Usart *p_usart, uint32_t c);
 void usart_write_line(Usart *p_usart, const char *string);
@@ -288,14 +370,22 @@ uint32_t usart_getchar(Usart *p_usart, uint32_t *c);
 uint32_t *usart_get_tx_access(Usart *p_usart);
 uint32_t *usart_get_rx_access(Usart *p_usart);
 #endif
+<<<<<<< HEAD
 #if (!SAM4L)
+=======
+#if (!SAM4L && !SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
+>>>>>>> origin/master
 Pdc *usart_get_pdc_base(Usart *p_usart);
 #endif
 void usart_enable_writeprotect(Usart *p_usart);
 void usart_disable_writeprotect(Usart *p_usart);
 uint32_t usart_get_writeprotect_status(Usart *p_usart);
+<<<<<<< HEAD
 uint8_t usart_get_error_number(Usart *p_usart);
 #if (SAM3S || SAM4S || SAM3U || SAM3XA || SAM4L)
+=======
+#if (SAM3S || SAM4S || SAM3U || SAM3XA || SAM4L || SAM4E || SAM4C || SAM4CP || SAM4CM || SAMV70 || SAMV71 || SAMS70 || SAME70)
+>>>>>>> origin/master
 void usart_man_set_tx_pre_len(Usart *p_usart, uint8_t uc_len);
 void usart_man_set_tx_pre_pattern(Usart *p_usart, uint8_t uc_pattern);
 void usart_man_set_tx_polarity(Usart *p_usart, uint8_t uc_polarity);
@@ -310,6 +400,14 @@ void usart_man_disable_drift_compensation(Usart *p_usart);
 uint32_t usart_get_version(Usart *p_usart);
 #endif
 
+<<<<<<< HEAD
+=======
+#if SAMG55
+void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
+		bool cmpmode, bool cmppar, uint8_t ul_high_value);
+#endif
+
+>>>>>>> origin/master
 /// @cond 0
 /**INDENT-OFF**/
 #ifdef __cplusplus
@@ -336,12 +434,21 @@ uint32_t usart_get_version(Usart *p_usart);
  *       peripherals. UART modules are compatible with the USART driver, but
  *       only for the functions and modes supported by the base UART driver.
  *
+<<<<<<< HEAD
  * \section usart_basic_use_case Basic use case
+=======
+>>>>>>> origin/master
  * \section usart_use_cases USART use cases
  * - \ref usart_basic_use_case
  * - \subpage usart_use_case_1
  * - \subpage usart_use_case_2
  *
+<<<<<<< HEAD
+=======
+ * \note The USART pins configuration are not included here. Please refer
+ *       the related code in board_init() function.
+ *
+>>>>>>> origin/master
  * \section usart_basic_use_case Basic use case - transmit a character
  * In this use case, the USART module is configured for:
  * - Using USART0
@@ -361,6 +468,7 @@ uint32_t usart_get_version(Usart *p_usart);
  * The following configuration must be added to the project (typically to a
  * conf_usart.h file, but it can also be added to your main application file.)
  * \code
+<<<<<<< HEAD
  *    #define USART_SERIAL                 USART0
  *    #define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
  *    #define USART_SERIAL_PIO             PINS_USART_PIO
@@ -394,10 +502,44 @@ uint32_t usart_get_version(Usart *p_usart);
  *    usart_enable_tx(USART_SERIAL);
  *    usart_enable_rx(USART_SERIAL);
  * \endcode
+=======
+	#define USART_SERIAL                 USART0
+	#define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
+	#define USART_SERIAL_BAUDRATE        9600
+	#define USART_SERIAL_CHAR_LENGTH     US_MR_CHRL_8_BIT
+	#define USART_SERIAL_PARITY          US_MR_PAR_NO
+	#define USART_SERIAL_STOP_BIT        US_MR_NBSTOP_1_BIT
+\endcode
+ *
+ * Add to application initialization:
+ * \code
+	    sysclk_init();
+
+	    board_init();
+
+	    const sam_usart_opt_t usart_console_settings = {
+	        USART_SERIAL_BAUDRATE,
+	        USART_SERIAL_CHAR_LENGTH,
+	        USART_SERIAL_PARITY,
+	        USART_SERIAL_STOP_BIT,
+	        US_MR_CHMODE_NORMAL
+	    };
+    #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	            sysclk_get_main_hz());
+	    usart_enable_tx(USART_SERIAL);
+	    usart_enable_rx(USART_SERIAL);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_basic_use_case_setup_flow Workflow
  * -# Initialize system clock:
  *   \code
+<<<<<<< HEAD
  *   sysclk_init();
  *   \endcode
  * -# Configure the USART Tx and Rx pins by call the board init function:
@@ -429,14 +571,65 @@ uint32_t usart_get_version(Usart *p_usart);
  *   usart_enable_tx(USART_SERIAL);
  *   usart_enable_rx(USART_SERIAL);
  *   \endcode
+=======
+	sysclk_init();
+\endcode
+ * -# Configure the USART Tx and Rx pins by call the board init function:
+ *   \code
+	board_init();
+\endcode
+ * \note Set the following define in conf_board.h file to enable COM port,it will be used in
+ * board_init() function to set up IOPorts for the USART pins.
+ * For SAM4L:
+ *   \code
+  #define CONF_BOARD_COM_PORT
+\endcode
+ * For other SAM devices:
+ *   \code
+  #define CONF_BOARD_UART_CONSOLE
+\endcode
+ * -# Create USART options struct:
+ *   \code
+	const sam_usart_opt_t usart_console_settings = {
+	     USART_SERIAL_BAUDRATE,
+	     USART_SERIAL_CHAR_LENGTH,
+	     USART_SERIAL_PARITY,
+	     USART_SERIAL_STOP_BIT,
+	     US_MR_CHMODE_NORMAL
+	};
+\endcode
+ * -# Enable the clock to the USART module:
+ *   \code
+	  #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+\endcode
+ * -# Initialize the USART module in RS232 mode:
+ *   \code
+	usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	        sysclk_get_main_hz());
+\endcode
+ * -# Enable the Rx and Tx modes of the USART module:
+ *   \code
+	usart_enable_tx(USART_SERIAL);
+	usart_enable_rx(USART_SERIAL);
+\endcode
+>>>>>>> origin/master
  *
  * \section usart_basic_use_case_usage Usage steps
  *
  * \subsection usart_basic_use_case_usage_code Example code
  * Add to application C-file:
  * \code
+<<<<<<< HEAD
  * usart_putchar(USART_SERIAL, 'a');
  * \endcode
+=======
+	usart_putchar(USART_SERIAL, 'a');
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_basic_use_case_usage_flow Workflow
  * -# Send an 'a' character via USART
@@ -467,6 +660,7 @@ uint32_t usart_get_version(Usart *p_usart);
  * The following configuration must be added to the project (typically to a
  * conf_usart.h file, but it can also be added to your main application file.):
  * \code
+<<<<<<< HEAD
  *    #define USART_SERIAL                 USART0
  *    #define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
  *    #define USART_SERIAL_PIO             PINS_USART_PIO
@@ -505,10 +699,51 @@ uint32_t usart_get_version(Usart *p_usart);
  *    usart_enable_tx(USART_SERIAL);
  *    usart_enable_rx(USART_SERIAL);
  * \endcode
+=======
+	#define USART_SERIAL                 USART0
+	#define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
+	#define USART_SERIAL_BAUDRATE        9600
+	#define USART_SERIAL_CHAR_LENGTH     US_MR_CHRL_8_BIT
+	#define USART_SERIAL_PARITY          US_MR_PAR_NO
+	#define USART_SERIAL_STOP_BIT        US_MR_NBSTOP_1_BIT
+\endcode
+ *
+ * A variable for the received byte must be added:
+ * \code
+	uint32_t received_byte;
+\endcode
+ *
+ * Add to application initialization:
+ * \code
+	    sysclk_init();
+
+	    board_init();
+
+	    const sam_usart_opt_t usart_console_settings = {
+	        USART_SERIAL_BAUDRATE,
+	        USART_SERIAL_CHAR_LENGTH,
+	        USART_SERIAL_PARITY,
+	        USART_SERIAL_STOP_BIT,
+	        US_MR_CHMODE_NORMAL
+	    };
+
+    #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+
+	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	            sysclk_get_main_hz());
+	    usart_enable_tx(USART_SERIAL);
+	    usart_enable_rx(USART_SERIAL);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_use_case_1_setup_flow Workflow
  * -# Initialize system clock:
  *   \code
+<<<<<<< HEAD
  *   sysclk_init();
  *   \endcode
  * -# Configure the USART Tx and Rx pins  by call the board init function:
@@ -538,15 +773,67 @@ uint32_t usart_get_version(Usart *p_usart);
  *   usart_enable_tx(USART_SERIAL);
  *   usart_enable_rx(USART_SERIAL);
  *   \endcode
+=======
+	sysclk_init();
+\endcode
+ * -# Configure the USART Tx and Rx pins  by call the board init function:
+ *   \code
+	board_init();
+\endcode
+ * \note Set the following define in conf_board.h file to enable COM port,it will be used in
+ * board_init() function to set up IOPorts for the USART pins.
+ * For SAM4L:
+ *   \code
+  #define CONF_BOARD_COM_PORT
+\endcode
+ * For other SAM devices:
+ *   \code
+  #define CONF_BOARD_UART_CONSOLE
+\endcode
+ * -# Create USART options struct:
+ *   \code
+	const sam_usart_opt_t usart_console_settings = {
+	     USART_SERIAL_BAUDRATE,
+	     USART_SERIAL_CHAR_LENGTH,
+	     USART_SERIAL_PARITY,
+	     USART_SERIAL_STOP_BIT,
+	     US_MR_CHMODE_NORMAL
+	};
+\endcode
+ * -# Enable the clock to the USART module:
+ *   \code
+    #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+\endcode
+ * -# Initialize the USART module in RS232 mode:
+ *   \code
+	usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	        sysclk_get_main_hz());
+\endcode
+ * -# Enable the Rx and Tx modes of the USART module:
+ *   \code
+	usart_enable_tx(USART_SERIAL);
+	usart_enable_rx(USART_SERIAL);
+\endcode
+>>>>>>> origin/master
  *
  * \section usart_use_case_1_usage Usage steps
  *
  * \subsection usart_use_case_1_usage_code Example code
  * Add to, e.g., main loop in application C-file:
  * \code
+<<<<<<< HEAD
  * received_byte = usart_getchar(USART_SERIAL);
  * usart_putchar(USART_SERIAL, received_byte);
  * \endcode
+=======
+	received_byte = usart_getchar(USART_SERIAL);
+	usart_putchar(USART_SERIAL, received_byte);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_use_case_1_usage_flow Workflow
  * -# Wait for reception of a character:
@@ -582,6 +869,7 @@ uint32_t usart_get_version(Usart *p_usart);
  * The following configuration must be added to the project (typically to a
  * conf_usart.h file, but it can also be added to your main application file.):
  * \code
+<<<<<<< HEAD
  *    #define USART_SERIAL                 USART0
  *    #define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
  *    #define USART_SERIAL_ISR_HANDLER     USART0_Handler
@@ -624,10 +912,55 @@ uint32_t usart_get_version(Usart *p_usart);
  *    usart_enable_interrupt(USART_SERIAL, US_IER_RXRDY);
  *    NVIC_EnableIRQ(USART_SERIAL_IRQ);
  * \endcode
+=======
+	#define USART_SERIAL                 USART0
+	#define USART_SERIAL_ID              ID_USART0  //USART0 for sam4l
+	#define USART_SERIAL_ISR_HANDLER     USART0_Handler
+	#define USART_SERIAL_BAUDRATE        9600
+	#define USART_SERIAL_CHAR_LENGTH     US_MR_CHRL_8_BIT
+	#define USART_SERIAL_PARITY          US_MR_PAR_NO
+	#define USART_SERIAL_STOP_BIT        US_MR_NBSTOP_1_BIT
+\endcode
+ *
+ * A variable for the received byte must be added:
+ * \code
+	uint32_t received_byte;
+\endcode
+ *
+ * Add to application initialization:
+ * \code
+	    sysclk_init();
+
+	    board_init();
+
+	    const sam_usart_opt_t usart_console_settings = {
+	        USART_SERIAL_BAUDRATE,
+	        USART_SERIAL_CHAR_LENGTH,
+	        USART_SERIAL_PARITY,
+	        USART_SERIAL_STOP_BIT,
+	        US_MR_CHMODE_NORMAL
+	    };
+
+    #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+
+	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	            sysclk_get_main_hz());
+	    usart_enable_tx(USART_SERIAL);
+	    usart_enable_rx(USART_SERIAL);
+
+	    usart_enable_interrupt(USART_SERIAL, US_IER_RXRDY);
+	    NVIC_EnableIRQ(USART_SERIAL_IRQ);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_use_case_2_setup_flow Workflow
  * -# Initialize system clock:
  *   \code
+<<<<<<< HEAD
  *   sysclk_init();
  *   \endcode
  * -# Configure the USART Tx and Rx pins  by call the board init function:
@@ -663,11 +996,64 @@ uint32_t usart_get_version(Usart *p_usart);
  *   usart_enable_interrupt(USART_SERIAL, US_IER_RXRDY);
  *   NVIC_EnableIRQ(USART_SERIAL_IRQ);
  *   \endcode
+=======
+	sysclk_init();
+\endcode
+ * -# Configure the USART Tx and Rx pins  by call the board init function:
+ *   \code
+	board_init();
+\endcode
+ * \note Set the following define in conf_board.h file to enable COM port,it will be used in
+ * board_init() function to set up IOPorts for the USART pins.
+ * For SAM4L:
+ *   \code
+  #define CONF_BOARD_COM_PORT
+\endcode
+ * For other SAM devices:
+ *   \code
+  #define CONF_BOARD_UART_CONSOLE
+\endcode
+ * -# Create USART options struct:
+ *   \code
+	const sam_usart_opt_t usart_console_settings = {
+	     USART_SERIAL_BAUDRATE,
+	     USART_SERIAL_CHAR_LENGTH,
+	     USART_SERIAL_PARITY,
+	     USART_SERIAL_STOP_BIT,
+	     US_MR_CHMODE_NORMAL
+	};
+\endcode
+ * -# Enable the clock to the USART module:
+ *   \code
+    #if SAM4L
+      sysclk_enable_peripheral_clock(USART_SERIAL);
+    #else
+	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
+    #endif
+\endcode
+ * -# Initialize the USART module in RS232 mode:
+ *   \code
+	usart_init_rs232(USART_SERIAL, &usart_console_settings,
+	        sysclk_get_main_hz());
+\endcode
+ * -# Enable the Rx and Tx modes of the USART module:
+ *   \code
+	usart_enable_tx(USART_SERIAL);
+	usart_enable_rx(USART_SERIAL);
+\endcode
+ * -# Enable the USART character reception interrupt, and general interrupts
+ *   for the USART module.
+ *   \code
+	usart_enable_interrupt(USART_SERIAL, US_IER_RXRDY);
+	NVIC_EnableIRQ(USART_SERIAL_IRQ);
+\endcode
+>>>>>>> origin/master
  * \section usart_use_case_2_usage Usage steps
  *
  * \subsection usart_use_case_2_usage_code Example code
  * Add to your main application C-file the USART interrupt handler:
  * \code
+<<<<<<< HEAD
  * void USART_SERIAL_ISR_HANDLER(void)
  * {
  *    uint32_t dw_status = usart_get_status(USART_SERIAL);
@@ -680,6 +1066,20 @@ uint32_t usart_get_version(Usart *p_usart);
  *    }
  * }
  * \endcode
+=======
+	 void USART_SERIAL_ISR_HANDLER(void)
+	 {
+	    uint32_t dw_status = usart_get_status(USART_SERIAL);
+
+	    if (dw_status & US_CSR_RXRDY) {
+	        uint32_t received_byte;
+
+	        usart_read(USART_SERIAL, &received_byte);
+	        usart_write(USART_SERIAL, received_byte);
+	    }
+	 }
+\endcode
+>>>>>>> origin/master
  *
  * \subsection usart_use_case_2_usage_flow Workflow
  * -# When the USART ISR fires, retrieve the USART module interrupt flags:

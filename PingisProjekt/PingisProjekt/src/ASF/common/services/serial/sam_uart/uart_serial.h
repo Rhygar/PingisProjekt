@@ -3,7 +3,11 @@
  *
  * \brief Uart Serial for SAM.
  *
+<<<<<<< HEAD
  * Copyright (c) 2011 - 2012 Atmel Corporation. All rights reserved.
+=======
+ * Copyright (c) 2011-2015 Atmel Corporation. All rights reserved.
+>>>>>>> origin/master
  *
  * \asf_license_start
  *
@@ -40,12 +44,25 @@
  * \asf_license_stop
  *
  */
+<<<<<<< HEAD
+=======
+/*
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ */
+>>>>>>> origin/master
 #ifndef _UART_SERIAL_H_
 #define _UART_SERIAL_H_
 
 #include "compiler.h"
 #include "sysclk.h"
+<<<<<<< HEAD
 #if (!SAM4L)
+=======
+#if (SAMG55)
+#include "flexcom.h"
+#endif
+#if ((!SAM4L) && (!SAMG55))
+>>>>>>> origin/master
 #include "uart.h"
 #endif
 #include "usart.h"
@@ -95,7 +112,11 @@ typedef Usart *usart_if;
 static inline void usart_serial_init(usart_if p_usart,
 		usart_serial_options_t *opt)
 {
+<<<<<<< HEAD
 #if (!SAM4L)
+=======
+#if ((!SAM4L) && (!SAMG55))
+>>>>>>> origin/master
 	sam_uart_opt_t uart_settings;
 	uart_settings.ul_mck = sysclk_get_peripheral_hz();
 	uart_settings.ul_baudrate = opt->baudrate;
@@ -130,6 +151,23 @@ static inline void usart_serial_init(usart_if p_usart,
 		uart_init((Uart*)p_usart, &uart_settings);
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef UART2
+	if (UART2 == (Uart*)p_usart) {
+		sysclk_enable_peripheral_clock(ID_UART2);
+		/* Configure UART */
+		uart_init((Uart*)p_usart, &uart_settings);
+	}
+# endif
+# ifdef UART3
+	if (UART3 == (Uart*)p_usart) {
+		sysclk_enable_peripheral_clock(ID_UART3);
+		/* Configure UART */
+		uart_init((Uart*)p_usart, &uart_settings);
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef UART */
 
 
@@ -155,7 +193,16 @@ static inline void usart_serial_init(usart_if p_usart,
 # ifdef USART0
 	if (USART0 == p_usart) {
 #if (!SAM4L)
+<<<<<<< HEAD
 		sysclk_enable_peripheral_clock(ID_USART0);
+=======
+#if (SAMG55)
+		flexcom_enable(FLEXCOM0);
+		flexcom_set_opmode(FLEXCOM0, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART0);
+#endif
+>>>>>>> origin/master
 		/* Configure USART */
 		usart_init_rs232(p_usart, &usart_settings,
 				sysclk_get_peripheral_hz());
@@ -174,7 +221,16 @@ static inline void usart_serial_init(usart_if p_usart,
 # ifdef USART1
 	if (USART1 == p_usart) {
 #if (!SAM4L)
+<<<<<<< HEAD
 		sysclk_enable_peripheral_clock(ID_USART1);
+=======
+#if (SAMG55)
+		flexcom_enable(FLEXCOM1);
+		flexcom_set_opmode(FLEXCOM1, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART1);
+#endif
+>>>>>>> origin/master
 		/* Configure USART */
 		usart_init_rs232(p_usart, &usart_settings,
 				sysclk_get_peripheral_hz());
@@ -193,7 +249,16 @@ static inline void usart_serial_init(usart_if p_usart,
 # ifdef USART2
 	if (USART2 == p_usart) {
 #if (!SAM4L)
+<<<<<<< HEAD
 		sysclk_enable_peripheral_clock(ID_USART2);
+=======
+#if (SAMG55)
+		flexcom_enable(FLEXCOM2);
+		flexcom_set_opmode(FLEXCOM2, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART2);
+#endif
+>>>>>>> origin/master
 		/* Configure USART */
 		usart_init_rs232(p_usart, &usart_settings,
 				sysclk_get_peripheral_hz());
@@ -212,7 +277,16 @@ static inline void usart_serial_init(usart_if p_usart,
 # ifdef USART3
 	if (USART3 == p_usart) {
 #if (!SAM4L)
+<<<<<<< HEAD
 		sysclk_enable_peripheral_clock(ID_USART3);
+=======
+#if (SAMG55)
+		flexcom_enable(FLEXCOM3);
+		flexcom_set_opmode(FLEXCOM3, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART3);
+#endif
+>>>>>>> origin/master
 		/* Configure USART */
 		usart_init_rs232(p_usart, &usart_settings,
 				sysclk_get_peripheral_hz());
@@ -231,7 +305,15 @@ static inline void usart_serial_init(usart_if p_usart,
 # ifdef USART4
 	if (USART4 == p_usart) {
 #if (!SAM4L)
+<<<<<<< HEAD
 		sysclk_enable_peripheral_clock(ID_USART4);
+=======
+#if (SAMG55)
+		flexcom_enable(FLEXCOM4);
+		flexcom_set_opmode(FLEXCOM4, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART4);
+#endif
 		/* Configure USART */
 		usart_init_rs232(p_usart, &usart_settings,
 				sysclk_get_peripheral_hz());
@@ -247,6 +329,83 @@ static inline void usart_serial_init(usart_if p_usart,
 		usart_enable_rx(p_usart);
 	}
 # endif
+# ifdef USART5
+	if (USART5 == p_usart) {
+#if (!SAM4L)
+#if (SAMG55)
+		flexcom_enable(FLEXCOM5);
+		flexcom_set_opmode(FLEXCOM5, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART5);
+#endif
+>>>>>>> origin/master
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_hz());
+#endif
+#if (SAM4L)
+		sysclk_enable_peripheral_clock(p_usart);
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_bus_hz(p_usart));
+#endif
+		/* Enable the receiver and transmitter. */
+		usart_enable_tx(p_usart);
+		usart_enable_rx(p_usart);
+	}
+# endif
+<<<<<<< HEAD
+=======
+# ifdef USART6
+	if (USART6 == p_usart) {
+#if (!SAM4L)
+#if (SAMG55)
+		flexcom_enable(FLEXCOM6);
+		flexcom_set_opmode(FLEXCOM6, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART6);
+#endif
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_hz());
+#endif
+#if (SAM4L)
+		sysclk_enable_peripheral_clock(p_usart);
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_bus_hz(p_usart));
+#endif
+		/* Enable the receiver and transmitter. */
+		usart_enable_tx(p_usart);
+		usart_enable_rx(p_usart);
+	}
+# endif
+# ifdef USART7
+	if (USART7 == p_usart) {
+#if (!SAM4L)
+#if (SAMG55)
+		flexcom_enable(FLEXCOM7);
+		flexcom_set_opmode(FLEXCOM7, FLEXCOM_USART);
+#else
+		sysclk_enable_peripheral_clock(ID_USART7);
+#endif
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_hz());
+#endif
+#if (SAM4L)
+		sysclk_enable_peripheral_clock(p_usart);
+		/* Configure USART */
+		usart_init_rs232(p_usart, &usart_settings,
+				sysclk_get_peripheral_bus_hz(p_usart));
+#endif
+		/* Enable the receiver and transmitter. */
+		usart_enable_tx(p_usart);
+		usart_enable_rx(p_usart);
+	}
+# endif
+
+>>>>>>> origin/master
 #endif /* ifdef USART */
 
 }
@@ -282,6 +441,21 @@ static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
 		return 1;
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef UART2
+	if (UART2 == (Uart*)p_usart) {
+		while (uart_write((Uart*)p_usart, c)!=0);
+		return 1;
+	}
+# endif
+# ifdef UART3
+	if (UART3 == (Uart*)p_usart) {
+		while (uart_write((Uart*)p_usart, c)!=0);
+		return 1;
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef UART */
 
 
@@ -321,6 +495,27 @@ static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
 		return 1;
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef USART5
+	if (USART5 == p_usart) {
+		while (usart_write(p_usart, c)!=0);
+		return 1;
+	}
+# endif
+# ifdef USART6
+	if (USART6 == p_usart) {
+		while (usart_write(p_usart, c)!=0);
+		return 1;
+	}
+# endif
+# ifdef USART7
+	if (USART7 == p_usart) {
+		while (usart_write(p_usart, c)!=0);
+		return 1;
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef USART */
 
 	return 0;
@@ -334,7 +529,14 @@ static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
  */
 static inline void usart_serial_getchar(usart_if p_usart, uint8_t *data)
 {
+<<<<<<< HEAD
 	uint32_t val;
+=======
+	uint32_t val = 0;
+
+	/* Avoid Cppcheck Warning */
+	UNUSED(val);
+>>>>>>> origin/master
 
 #ifdef UART
 	if (UART == (Uart*)p_usart) {
@@ -351,6 +553,19 @@ static inline void usart_serial_getchar(usart_if p_usart, uint8_t *data)
 		while (uart_read((Uart*)p_usart, data));
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef UART2
+	if (UART2 == (Uart*)p_usart) {
+		while (uart_read((Uart*)p_usart, data));
+	}
+# endif
+# ifdef UART3
+	if (UART3 == (Uart*)p_usart) {
+		while (uart_read((Uart*)p_usart, data));
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef UART */
 
 
@@ -390,6 +605,27 @@ static inline void usart_serial_getchar(usart_if p_usart, uint8_t *data)
 		*data = (uint8_t)(val & 0xFF);
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef USART5
+	if (USART5 == p_usart) {
+		while (usart_read(p_usart, &val));
+		*data = (uint8_t)(val & 0xFF);
+	}
+# endif
+# ifdef USART6
+	if (USART6 == p_usart) {
+		while (usart_read(p_usart, &val));
+		*data = (uint8_t)(val & 0xFF);
+	}
+# endif
+# ifdef USART7
+	if (USART7 == p_usart) {
+		while (usart_read(p_usart, &val));
+		*data = (uint8_t)(val & 0xFF);
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef USART */
 
 }
@@ -419,6 +655,19 @@ static inline uint32_t usart_serial_is_rx_ready(usart_if p_usart)
 		return uart_is_rx_ready((Uart*)p_usart);
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef UART2
+	if (UART2 == (Uart*)p_usart) {
+		return uart_is_rx_ready((Uart*)p_usart);
+	}
+# endif
+# ifdef UART3
+	if (UART3 == (Uart*)p_usart) {
+		return uart_is_rx_ready((Uart*)p_usart);
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef UART */
 
 
@@ -452,6 +701,24 @@ static inline uint32_t usart_serial_is_rx_ready(usart_if p_usart)
 		return usart_is_rx_ready(p_usart);
 	}
 # endif
+<<<<<<< HEAD
+=======
+# ifdef USART5
+	if (USART5 == p_usart) {
+		return usart_is_rx_ready(p_usart);
+	}
+# endif
+# ifdef USART6
+	if (USART6 == p_usart) {
+		return usart_is_rx_ready(p_usart);
+	}
+# endif
+# ifdef USART7
+	if (USART7 == p_usart) {
+		return usart_is_rx_ready(p_usart);
+	}
+# endif
+>>>>>>> origin/master
 #endif /* ifdef USART */
 
 	return 0;

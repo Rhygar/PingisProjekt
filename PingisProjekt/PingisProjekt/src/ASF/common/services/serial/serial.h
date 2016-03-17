@@ -3,7 +3,11 @@
  *
  * \brief Serial Mode management
  *
+<<<<<<< HEAD
  * Copyright (c) 2010 - 2012 Atmel Corporation. All rights reserved.
+=======
+ * Copyright (c) 2010-2015 Atmel Corporation. All rights reserved.
+>>>>>>> origin/master
  *
  * \asf_license_start
  *
@@ -40,6 +44,12 @@
  * \asf_license_stop
  *
  */
+<<<<<<< HEAD
+=======
+/*
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ */
+>>>>>>> origin/master
 #ifndef SERIAL_H_INCLUDED
 #define SERIAL_H_INCLUDED
 
@@ -56,8 +66,17 @@
 
 #if XMEGA
 # include "xmega_usart/usart_serial.h"
+<<<<<<< HEAD
 #elif UC3
 # include "uc3_usart/usart_serial.h"
+=======
+#elif MEGA_RF
+# include "megarf_usart/usart_serial.h"
+#elif UC3
+# include "uc3_usart/usart_serial.h"
+#elif (SAM0)
+#include "sam0_usart/usart_serial.h"
+>>>>>>> origin/master
 #elif SAM
 # include "sam_uart/uart_serial.h"
 #else
@@ -131,6 +150,7 @@
  *
  * \subsection serial_basic_use_case_setup_code Example code
  * The following configuration must be added to the project (typically to a 
+<<<<<<< HEAD
  * conf_serial.h file, but it can also be added to your main application file.)
  * \code
  *    #define USART_SERIAL                     &USARTD0
@@ -139,12 +159,27 @@
  *    #define USART_SERIAL_PARITY              USART_PMODE_DISABLED_gc
  *    #define USART_SERIAL_STOP_BIT            false
  * \endcode
+=======
+ * conf_uart_serial.h file, but it can also be added to your main application file.)
+ *
+ * \note The following takes SAM3X configuration for example, other devices have similar
+ * configuration, but their parameters may be different, refer to corresponding header files.
+ *
+ * \code
+	#define USART_SERIAL                     &USARTD0
+	#define USART_SERIAL_BAUDRATE            9600
+	#define USART_SERIAL_CHAR_LENGTH         US_MR_CHRL_8_BIT
+	#define USART_SERIAL_PARITY              US_MR_PAR_NO
+	#define USART_SERIAL_STOP_BIT            false
+\endcode
+>>>>>>> origin/master
  *
  * A variable for the received byte must be added:
  * \code uint8_t received_byte; \endcode
  *
  * Add to application initialization:
  * \code
+<<<<<<< HEAD
  *    sysclk_init();
  *
  *    static usart_serial_options_t usart_options = {
@@ -156,12 +191,26 @@
  *
  *    usart_serial_init(USART_SERIAL, &usart_options);
  * \endcode
+=======
+	    sysclk_init();
+
+	    static usart_serial_options_t usart_options = {
+	       .baudrate = USART_SERIAL_BAUDRATE,
+	       .charlength = USART_SERIAL_CHAR_LENGTH,
+	       .paritytype = USART_SERIAL_PARITY,
+	       .stopbits = USART_SERIAL_STOP_BIT
+	    };
+
+	    usart_serial_init(USART_SERIAL, &usart_options);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection serial_basic_use_case_setup_flow Workflow
  * -# Initialize system clock:
  *   - \code sysclk_init(); \endcode
  * -# Create serial USART options struct:
  *   - \code
+<<<<<<< HEAD
  *        static usart_serial_options_t usart_options = {
  *           .baudrate = USART_SERIAL_BAUDRATE,
  *           .charlength = USART_SERIAL_CHAR_LENGTH,
@@ -169,6 +218,15 @@
  *           .stopbits = USART_SERIAL_STOP_BIT
  *        };
  *     \endcode
+=======
+	static usart_serial_options_t usart_options = {
+	   .baudrate = USART_SERIAL_BAUDRATE,
+	   .charlength = USART_SERIAL_CHAR_LENGTH,
+	   .paritytype = USART_SERIAL_PARITY,
+	   .stopbits = USART_SERIAL_STOP_BIT
+	};
+\endcode
+>>>>>>> origin/master
  * -# Initialize the serial service:
  *   - \code usart_serial_init(USART_SERIAL, &usart_options);\endcode
  *
@@ -177,9 +235,15 @@
  * \subsection serial_basic_use_case_usage_code Example code
  * Add to application C-file:
  * \code
+<<<<<<< HEAD
  *    usart_serial_getchar(USART_SERIAL, &received_byte);
  *    usart_serial_putchar(USART_SERIAL, received_byte);
  * \endcode
+=======
+	usart_serial_getchar(USART_SERIAL, &received_byte);
+	usart_serial_putchar(USART_SERIAL, received_byte);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection serial_basic_use_case_usage_flow Workflow
  * -# Wait for reception of a character:
@@ -208,6 +272,7 @@
  *
  * \subsection serial_use_case_1_setup_code Example code
  * The following configuration must be added to the project (typically to a 
+<<<<<<< HEAD
  * conf_serial.h file, but it can also be added to your main application file.):
  * \code
  *    #define USART_SERIAL                     &USARTD0
@@ -230,12 +295,41 @@
  *
  *    usart_serial_init(USART_SERIAL, &usart_options);
  * \endcode
+=======
+ * conf_uart_serial.h file, but it can also be added to your main application file.):
+ *
+ * \note The following takes SAM3X configuration for example, other devices have similar
+ * configuration, but their parameters may be different, refer to corresponding header files.
+ *
+ * \code
+	#define USART_SERIAL                     &USARTD0
+	#define USART_SERIAL_BAUDRATE            9600
+	#define USART_SERIAL_CHAR_LENGTH         US_MR_CHRL_8_BIT
+	#define USART_SERIAL_PARITY              US_MR_PAR_NO
+	#define USART_SERIAL_STOP_BIT            false
+\endcode
+ *
+ * Add to application initialization:
+ * \code
+	    sysclk_init();
+
+	    static usart_serial_options_t usart_options = {
+	       .baudrate = USART_SERIAL_BAUDRATE,
+	       .charlength = USART_SERIAL_CHAR_LENGTH,
+	       .paritytype = USART_SERIAL_PARITY,
+	       .stopbits = USART_SERIAL_STOP_BIT
+	    };
+
+	    usart_serial_init(USART_SERIAL, &usart_options);
+\endcode
+>>>>>>> origin/master
  *
  * \subsection serial_use_case_1_setup_flow Workflow
  * -# Initialize system clock:
  *   - \code sysclk_init(); \endcode
  * -# Create USART options struct:
  *   - \code
+<<<<<<< HEAD
  *        static usart_serial_options_t usart_options = {
  *           .baudrate = USART_SERIAL_BAUDRATE,
  *           .charlength = USART_SERIAL_CHAR_LENGTH,
@@ -243,6 +337,15 @@
  *           .stopbits = USART_SERIAL_STOP_BIT
  *        };
  *     \endcode
+=======
+	static usart_serial_options_t usart_options = {
+	   .baudrate = USART_SERIAL_BAUDRATE,
+	   .charlength = USART_SERIAL_CHAR_LENGTH,
+	   .paritytype = USART_SERIAL_PARITY,
+	   .stopbits = USART_SERIAL_STOP_BIT
+	};
+\endcode
+>>>>>>> origin/master
  * -# Initialize in RS232 mode:
  *   - \code usart_serial_init(USART_SERIAL_EXAMPLE, &usart_options); \endcode
  *
@@ -251,8 +354,13 @@
  * \subsection serial_use_case_1_usage_code Example code
  * Add to, e.g., main loop in application C-file:
  * \code
+<<<<<<< HEAD
  *       usart_serial_write_packet(USART_SERIAL, "Test String", strlen("Test String"));
  * \endcode
+=======
+	usart_serial_write_packet(USART_SERIAL, "Test String", strlen("Test String"));
+\endcode
+>>>>>>> origin/master
  *
  * \subsection serial_use_case_1_usage_flow Workflow
  * -# Write a string of text to the USART:
