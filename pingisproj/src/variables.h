@@ -10,7 +10,7 @@
 #define VARIABLES_H_
 
 extern xSemaphoreHandle variables;
-extern uint8_t adc_val_in_cm[];
+extern uint16_t adc_val_in_cm[];
 extern uint16_t bor_varde;
 extern uint16_t ut_varde;
 extern uint16_t mat_varde;

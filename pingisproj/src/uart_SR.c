@@ -22,19 +22,19 @@ void matlab_values(void){
  	}
  	
  	gets(linjarBuffer);
- 	p_varde = atof(linjarBuffer);
+ 	p_varde = atof(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	i_varde = atof(linjarBuffer);
+ 	i_varde = atof(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	d_varde = atof(linjarBuffer);
+ 	d_varde = atof(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	bor_varde = atof(linjarBuffer);
+ 	bor_varde = atof(linjarBuffer)/1000;
 	 
 	gets(linjarBuffer);
-	timer = atof(linjarBuffer);
+	timer = atof(linjarBuffer)/1000;
 }
 
 void configure_console(void)

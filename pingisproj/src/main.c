@@ -53,12 +53,11 @@ uint16_t ut_varde = 0;
 uint16_t mat_varde = 0;
 uint16_t fel_varde = 0;
 uint16_t vat_varde = 0;
-uint8_t adc_val_in_cm[LINJAR_ARRAY] = {0};
+uint16_t adc_val_in_cm[LINJAR_ARRAY] = {0};
 uint16_t timer;
 
 int main (void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
 	sysclk_init();
 	board_init();
 	configure_console();

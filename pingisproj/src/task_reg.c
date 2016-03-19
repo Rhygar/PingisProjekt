@@ -50,12 +50,14 @@ void task_reg(void *pvParameters)
 		m_err = n_err - g_err;
 		/*----------P-REGULATOR----------*/
 		float p_regler = (float) (n_err*p_varde);
-		/*----------I-REGULATOR----------*/
-		float i_regler = (float) ((i_sum*(timer/1000))/i_varde) * p_varde;
-		/*----------D-REGULATOR----------*/
-		float d_regler = (float) ((m_err/timer)*d_varde) * p_varde;
-		/*----------PID----------*/
-		float styrvarde = p_regler + i_regler + d_regler;
+		
+		float styrvarde = p_regler;
+// 		/*----------I-REGULATOR----------*/
+// 		float i_regler = (float) ((i_sum*(timer/1000))/i_varde) * p_varde;
+// 		/*----------D-REGULATOR----------*/
+// 		float d_regler = (float) ((m_err/timer)*d_varde) * p_varde;
+// 		/*----------PID----------*/
+// 		float styrvarde = p_regler + i_regler + d_regler;
 		
 		g_err = n_err;
 		

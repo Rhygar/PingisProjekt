@@ -13,7 +13,7 @@ void task_com(void *pvParameters)
 	const portTickType xTimeIncrement = timer;
 	
 	xLastWakeTime = xTaskGetTickCount();
-	uint8_t string[LINJAR_BUFFER_LENGTH] = {0};
+	uint16_t string[LINJAR_BUFFER_LENGTH] = {0};
 	//char buffer[50] = {0};
 	
 	while(1)
