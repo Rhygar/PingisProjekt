@@ -30,7 +30,7 @@ void task_reg(void *pvParameters)
  		while ((adc_get_status(ADC) & 0x1<<24) == 0);
 		int adc_val = adc_get_latest_value(ADC);
 		
-		/*------------To calculate the real distance in mm to the ball.---------------*/
+		/*------------To calculate the real distance in cm to the ball.---------------*/
 		
 		int index = adc_val/10;
 		// get the value in mm
@@ -38,7 +38,7 @@ void task_reg(void *pvParameters)
 		/* to get the values we might lose in "index" 
 		by calculating a diff between the element 
 		in the location and the next location in the list */
-		int diff = (bas_val - adc_val_in_cm[index+1]) * (adc_val % 10); 
+		int diff = ((bas_val - adc_val_in_cm[index+1]) * (adc_val % 10)); 
 		// the real distance.
 		int real_distance = bas_val + diff;
 		/*-------------------------------------------------------
@@ -49,9 +49,9 @@ void task_reg(void *pvParameters)
 		i_sum += n_err;
 		m_err = n_err - g_err;
 		/*----------P-REGULATOR----------*/
-		float p_regler = (float) (n_err*p_varde);
+		float p_regler = (float) (n_err* -p_varde);
 		
-		float styrvarde = p_regler;
+		float styrvarde = (float) p_regler;
 // 		/*----------I-REGULATOR----------*/
 // 		float i_regler = (float) ((i_sum*(timer/1000))/i_varde) * p_varde;
 // 		/*----------D-REGULATOR----------*/
@@ -60,15 +60,15 @@ void task_reg(void *pvParameters)
 // 		float styrvarde = p_regler + i_regler + d_regler;
 		
 		g_err = n_err;
-		
-		if (styrvarde > 999)
-		{
-			styrvarde = 999;
-		}
-		else if(styrvarde < 0)
-		{
-			styrvarde = 0;
-		}
+		 		
+	 		if (styrvarde > 999)
+	 		{
+	 			styrvarde = 999;
+	 		}
+	 		else if(styrvarde < 0)
+	 		{
+	 			styrvarde = 0;
+	 		}
 		/*-----------WRITE TO ARDUINO-----------*/
 		pwm_set_duty_cycle(styrvarde);
 		
