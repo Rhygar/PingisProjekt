@@ -7,22 +7,24 @@
 #include <asf.h>
 #include "variables.h"
 #include "pwm_io.h"
+#include "FIRkoef.h"
+#include "task_reg.h"
 
 void task_reg(void *pvParameters)
 {
 	portTickType xLastWakeTime;
-	const portTickType xTimeIncrement = 60;
+	const portTickType xTimeIncrement = timer;
 	xLastWakeTime = xTaskGetTickCount();
 	
 	char reg_buffer[50] = {0};
 	int i_sum = 0;
-	int p_regler = 0;
-	int i_regler = 0;
-	int d_regler = 0;
+	//int p_regler = 0;
+	//int i_regler = 0;
+	//int d_regler = 0;
 	int n_err = 0;
 	int m_err = 0;
 	int g_err = 0;
-	int offset = 500;
+	int offset = 600;
 	
 	while(1)
 	{
@@ -31,17 +33,22 @@ void task_reg(void *pvParameters)
  		while ((adc_get_status(ADC) & 0x1<<24) == 0);
 		int adc_val = adc_get_latest_value(ADC);
 		
-		/*------------To calculate the real distance in cm to the ball.---------------*/
+		adc_val = filter(adc_val);
 		
-		int index = adc_val/10;
+		
+		/*------------To calculate the real distance in mm to the ball.---------------*/
+		
+		int index = min(max((adc_val/10) - 1,0),LINJAR_ARRAY-2);
 		// get the value in mm
-		int bas_val = adc_val_in_cm[index];
+		//int bas_val = adc_val_in_mm[index];
 		/* to get the values we might lose in "index" 
 		by calculating a diff between the element 
 		in the location and the next location in the list */
-		int diff = ((bas_val - adc_val_in_cm[index+1]) * (adc_val % 10)); 
+		int diff = adc_val_in_mm[index] - adc_val_in_mm[index+1];
+		// * ((adc_val % 10)/10));
+		int pol = (diff *(adc_val % 10))/10; 
 		// the real distance.
-		int real_distance = bas_val + diff;
+		int real_distance = adc_val_in_mm[index] - pol;
 		/*-------------------------------------------------------
 		
 		
@@ -50,15 +57,15 @@ void task_reg(void *pvParameters)
 		i_sum += n_err;
 		m_err = n_err - g_err;
 		/*----------P-REGULATOR----------*/
-		float p_regler = (float) (n_err * -p_varde);
+		float p_regler = (float) (n_err * (-p_varde))+offset;
 		
-		float styrvarde = (float) p_regler + offset;
+		//float styrvarde = (float) p_regler;
 // 		/*----------I-REGULATOR----------*/
-// 		float i_regler = (float) ((i_sum*(timer/1000))/i_varde) * p_varde;
+ 		float i_regler = (float) (((i_sum*(timer/1000))/i_varde) * (-p_varde)) +offset;
 // 		/*----------D-REGULATOR----------*/
-// 		float d_regler = (float) ((m_err/timer)*d_varde) * p_varde;
+// 		float d_regler = (float) (((m_err/timer)*d_varde) * -p_varde)+offset;
 // 		/*----------PID----------*/
-// 		float styrvarde = p_regler + i_regler + d_regler;
+ 		float styrvarde = p_regler + i_regler; //+ d_regler;
 		
 		g_err = n_err;
 		 		
@@ -81,7 +88,26 @@ void task_reg(void *pvParameters)
 			xSemaphoreGive(variables);
 		}
 		
-		
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
 	}
+	
+}
+
+int filter(int adc_val)
+{
+	static int xbuff[BL] ={0};
+	float sum = 0;
+	
+	for (int i = BL; i > 0; i--)
+	{
+		xbuff[i] = xbuff[i-1];
+	}
+	
+	xbuff[0] = (float) adc_val;
+	
+	for (int i = 0; i < BL; i++)
+	{
+		sum += (xbuff[i]*B[i]);
+	}
+	return (int) sum;
 }

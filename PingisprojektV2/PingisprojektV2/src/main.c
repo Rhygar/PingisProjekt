@@ -53,7 +53,7 @@ uint16_t ut_varde = 0;
 uint16_t mat_varde = 0;
 int16_t fel_varde = 0;
 uint16_t vat_varde = 0;
-uint16_t adc_val_in_cm[LINJAR_ARRAY] = {0};
+uint16_t adc_val_in_mm[LINJAR_ARRAY] = {0};
 uint16_t timer;
 
 int main (void)
@@ -64,6 +64,7 @@ int main (void)
 	ioport_init();
 	adc_setup();
 	pwm_setup();
+	delay_init(sysclk_get_cpu_hz());
 	
 	ioport_set_pin_dir(CHECK_PIN, IOPORT_DIR_INPUT);
 	ioport_set_pin_dir(PWM_PIN, IOPORT_DIR_OUTPUT);

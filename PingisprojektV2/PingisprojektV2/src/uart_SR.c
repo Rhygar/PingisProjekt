@@ -17,7 +17,7 @@ void matlab_values(void){
  	while (i < LINJAR_ARRAY)
  	{
 		gets(linjarBuffer);
-		adc_val_in_cm[i] = atoi(linjarBuffer);
+		adc_val_in_mm[i] = atoi(linjarBuffer);
 		i++; 
  	}
  	

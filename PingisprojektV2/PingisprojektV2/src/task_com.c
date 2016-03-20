@@ -14,7 +14,7 @@ void task_com(void *pvParameters)
 	
 	xLastWakeTime = xTaskGetTickCount();
 	uint16_t string[LINJAR_BUFFER_LENGTH] = {0};
-	//char buffer[50] = {0};
+	
 	
 	while(1)
 	{
@@ -33,8 +33,6 @@ void task_com(void *pvParameters)
 			printf("\n");
 			xSemaphoreGive(variables);
 		}
-		//gets(buffer);
-		//testPWMVal = atoi (buffer);
 		
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
 

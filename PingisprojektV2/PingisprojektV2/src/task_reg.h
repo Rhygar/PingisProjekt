@@ -10,6 +10,7 @@
 #define TASK_REG_H_
 
 void task_reg(void *pvParameters);
+int filter(int);
 #define TASK_COM_STACKSIZE	(2048/sizeof(portSTACK_TYPE))
 #define NEWLINE				10
 
