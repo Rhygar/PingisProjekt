@@ -10,7 +10,7 @@
 #include "variables.h"
 
 void matlab_values(void){
-	// linjarBuffer receives first 100 values from matlab
+	/*linjarBuffer receives first 100 values from matlab*/
  	uint16_t linjarBuffer [LINJAR_BUFFER_LENGTH] = {0};
  	
 	int i = 0;
@@ -20,18 +20,18 @@ void matlab_values(void){
 		adc_val_in_mm[i] = atoi(linjarBuffer);
 		i++; 
  	}
+ 	/* Receives P,I,D,set_val and timer-values*/
+ 	gets(linjarBuffer);
+ 	p_varde = (float) atoi(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	p_varde = atoi(linjarBuffer)/1000;
+ 	i_varde =(float) atoi(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	i_varde = atoi(linjarBuffer)/1000;
+ 	d_varde =(float) atoi(linjarBuffer)/1000;
  	
  	gets(linjarBuffer);
- 	d_varde = atoi(linjarBuffer)/1000;
- 	
- 	gets(linjarBuffer);
- 	bor_varde = atoi(linjarBuffer);
+ 	set_val = atoi(linjarBuffer);
 	 
 	gets(linjarBuffer);
 	timer = atoi(linjarBuffer);

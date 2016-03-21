@@ -13,23 +13,23 @@ void task_com(void *pvParameters)
 	const portTickType xTimeIncrement = timer;
 	
 	xLastWakeTime = xTaskGetTickCount();
-	uint16_t string[LINJAR_BUFFER_LENGTH] = {0};
+	uint16_t str[LINJAR_BUFFER_LENGTH] = {0};
 	
 	
 	while(1)
 	{
 		if (xSemaphoreTake(variables, portMAX_DELAY))
 		{
-			itoa(mat_varde, string, 10);
-			printf(string);
+			itoa(meassure_val, str, 10);
+			printf(str);
 			printf("\n");
 			
-			itoa(fel_varde, string, 10);
-			printf(string);
+			itoa(error_val, str, 10);
+			printf(str);
 			printf("\n");
 			
-			itoa(ut_varde, string, 10);
-			printf(string);
+			itoa(out_val, str, 10);
+			printf(str);
 			printf("\n");
 			xSemaphoreGive(variables);
 		}

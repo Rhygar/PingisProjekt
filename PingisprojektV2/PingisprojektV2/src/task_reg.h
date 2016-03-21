@@ -11,6 +11,7 @@
 
 void task_reg(void *pvParameters);
 int filter(int);
+void reg_PID(uint16_t adc_val);
 #define TASK_COM_STACKSIZE	(2048/sizeof(portSTACK_TYPE))
 #define NEWLINE				10
 

@@ -9,8 +9,8 @@
 #ifndef TASK_COM_H_
 #define TASK_COM_H_
 
-#define TASK_COM_STACKSIZE	(2048/sizeof(portSTACK_TYPE))
-#define NEWLINE				10
+
+//#define NEWLINE				10
 
 void task_com(void *pvParameters);
 

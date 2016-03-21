@@ -42,29 +42,30 @@
 #define DIRECTION_PIN	PIO_PB27_IDX
 #define PWM_PIN			PIO_PC22_IDX
 
-xSemaphoreHandle variables = 1;
+xSemaphoreHandle variables = (xSemaphoreHandle) 1;
 
 char str[100] = {0};
 float p_varde;
 float i_varde;
 float d_varde;
-uint16_t bor_varde;
-uint16_t ut_varde = 0;
-uint16_t mat_varde = 0;
-int16_t fel_varde = 0;
+uint16_t set_val;
+uint16_t out_val = 0;
+uint16_t meassure_val = 0;
+int error_val = 0;
 uint16_t vat_varde = 0;
 uint16_t adc_val_in_mm[LINJAR_ARRAY] = {0};
 uint16_t timer;
+int offset = 500;
+
 
 int main (void)
 {
 	sysclk_init();
 	board_init();
-	configure_console();
 	ioport_init();
+	configure_console();
 	adc_setup();
 	pwm_setup();
-	delay_init(sysclk_get_cpu_hz());
 	
 	ioport_set_pin_dir(CHECK_PIN, IOPORT_DIR_INPUT);
 	ioport_set_pin_dir(PWM_PIN, IOPORT_DIR_OUTPUT);
@@ -73,7 +74,6 @@ int main (void)
 	ioport_set_pin_level(DIRECTION_PIN, IOPORT_PIN_LEVEL_HIGH);
 	
 	matlab_values();
-	
 	vSemaphoreCreateBinary(variables);
 	
 	xTaskCreate(task_com, (const signed char * const) "task_com", TASK_COM_STACKSIZE, NULL, 1, NULL);

@@ -1,8 +1,11 @@
 /*
  * task_reg.c
  *
+ * This task uses the analog value from the sensor to regulate
+ * the ping-pong ball to the setpoint.
+ *
  * Created: 2016-03-13 13:59:27
- *  Author: Andreas
+ * Author: Andreas
  */ 
 #include <asf.h>
 #include "variables.h"
@@ -14,18 +17,7 @@ void task_reg(void *pvParameters)
 {
 	portTickType xLastWakeTime;
 	const portTickType xTimeIncrement = timer;
-	xLastWakeTime = xTaskGetTickCount();
-	
-	char reg_buffer[50] = {0};
-	int i_sum = 0;
-	//int p_regler = 0;
-	//int i_regler = 0;
-	//int d_regler = 0;
-	int n_err = 0;
-	int m_err = 0;
-	int g_err = 0;
-	int offset = 600;
-	
+	xLastWakeTime = xTaskGetTickCount();	
 	while(1)
 	{
  		/*Start ADC and read the value */
@@ -34,70 +26,16 @@ void task_reg(void *pvParameters)
 		int adc_val = adc_get_latest_value(ADC);
 		
 		adc_val = filter(adc_val);
-		
-		
-		/*------------To calculate the real distance in mm to the ball.---------------*/
-		
-		int index = min(max((adc_val/10) - 1,0),LINJAR_ARRAY-2);
-		// get the value in mm
-		//int bas_val = adc_val_in_mm[index];
-		/* to get the values we might lose in "index" 
-		by calculating a diff between the element 
-		in the location and the next location in the list */
-		int diff = adc_val_in_mm[index] - adc_val_in_mm[index+1];
-		// * ((adc_val % 10)/10));
-		int pol = (diff *(adc_val % 10))/10; 
-		// the real distance.
-		int real_distance = adc_val_in_mm[index] - pol;
-		/*-------------------------------------------------------
-		
-		
-		---------------The regulation-process-------------------*/
-		n_err = bor_varde - real_distance;
-		i_sum += n_err;
-		m_err = n_err - g_err;
-		/*----------P-REGULATOR----------*/
-		float p_regler = (float) (n_err * (-p_varde))+offset;
-		
-		//float styrvarde = (float) p_regler;
-// 		/*----------I-REGULATOR----------*/
- 		float i_regler = (float) (((i_sum*(timer/1000))/i_varde) * (-p_varde)) +offset;
-// 		/*----------D-REGULATOR----------*/
-// 		float d_regler = (float) (((m_err/timer)*d_varde) * -p_varde)+offset;
-// 		/*----------PID----------*/
- 		float styrvarde = p_regler + i_regler; //+ d_regler;
-		
-		g_err = n_err;
-		 		
-	 		if (styrvarde > 999)
-	 		{
-	 			styrvarde = 999;
-	 		}
-	 		else if(styrvarde < 0)
-	 		{
-	 			styrvarde = 0;
-	 		}
-		/*-----------WRITE TO ARDUINO-----------*/
-		pwm_set_duty_cycle(styrvarde);
-		
-		if (xSemaphoreTake(variables, portMAX_DELAY))
-		{
-			mat_varde = real_distance;
-			fel_varde = n_err;
-			ut_varde = styrvarde;
-			xSemaphoreGive(variables);
-		}
-		
+		reg_PID (adc_val);
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
 	}
-	
 }
 
+/* FIR-filter is used to reduce strange adc values from the sensor, combined with a analog lowpass filter*/
 int filter(int adc_val)
 {
 	static int xbuff[BL] ={0};
 	float sum = 0;
-	
 	for (int i = BL; i > 0; i--)
 	{
 		xbuff[i] = xbuff[i-1];
@@ -111,3 +49,68 @@ int filter(int adc_val)
 	}
 	return (int) sum;
 }
+
+
+void reg_PID(uint16_t adc_val)
+{
+		/*------------To calculate the real distance in mm to the ball.---------------*/
+		
+		int index = min(max((adc_val/10) - 1, 0), LINJAR_ARRAY-2); 
+		
+		/* to get the values we might lose in "index" by calculating a diff between the element 
+		in the location and the next location in the list and then convert the value to mm */
+		int diff = adc_val_in_mm[index] - adc_val_in_mm[index+1];
+		/* interpolation to get more realistic values. */
+		int interpolation = (diff *(adc_val % 10))/10; 
+		/* the real distance. */
+		int real_distance = adc_val_in_mm[index] - interpolation;
+		/*-------------------------------------------------------
+		
+		---------------The regulation-process-------------------*/
+		static int i_sum = 0;
+		static int o_err = 0;
+		const float dT = (float) timer/1000;
+		int itgr_wndp = 100000;
+		int n_err = set_val - real_distance;
+		i_sum += n_err;
+		i_sum = max(min(i_sum, itgr_wndp), -itgr_wndp);
+		int m_err = o_err - n_err;
+		
+		/*----------P-REGULATOR----------*/
+		float p_regler = (float) (n_err * (-p_varde));
+		
+ 		/*----------I-REGULATOR----------*/
+ 		float i_regler = (float) (((i_sum*dT)/i_varde) * (-p_varde));
+ 		
+		 /*----------D-REGULATOR----------*/
+ 		float d_regler = (float) ((m_err/dT)*d_varde) * (-p_varde);
+ 		
+		 /*----------PID----------*/
+ 		float PID_regler =  p_regler + i_regler + d_regler;
+		int control_val = (int) (offset + PID_regler);
+		/*--------------------------------------*/ 	
+ 	 	if (control_val > 999)
+		{
+			control_val = 999;
+		}
+		else if(control_val < 0)
+		{
+ 			control_val = 0;
+ 		}
+			  
+		/*-----------WRITE TO ARDUINO-----------*/
+		/* Sends the control-value to matlab then gives away the semaphore*/
+		pwm_set_duty_cycle(control_val);
+		
+		if (xSemaphoreTake(variables, portMAX_DELAY))
+		{
+			meassure_val = real_distance;
+			error_val = n_err;
+			out_val = control_val;
+			xSemaphoreGive(variables);
+		}
+		/* The latest error becomes the old one*/
+		o_err = n_err;		
+}
+
+
