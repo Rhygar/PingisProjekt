@@ -1,8 +1,10 @@
 /*
  * pwm_io.c
  *
+ * From previous lab
  * Created: 2016-03-13 14:57:58
- *  Author: Andreas
+ * Author: John Tengvall and Andreas Langhammer
+ * 
  */ 
 #include <asf.h>
 #include "pwm_io.h"

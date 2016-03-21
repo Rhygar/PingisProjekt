@@ -1,8 +1,12 @@
 /*
  * uart_SR.c
- *
+ * 
+ * Receives the values sent from matlab.
+ * First the array of 100 elements then the other
+ * values that are needed to regulate.
+ * The function configure console is used to make the serial communication work properly.
  * Created: 2016-03-12 17:41:31
- *  Author: Andreas & John
+ * Author: John Tengvall and Andreas Langhammer
  */ 
 
 #include <asf.h>
@@ -10,9 +14,9 @@
 #include "variables.h"
 
 void matlab_values(void){
-	/*linjarBuffer receives first 100 values from matlab*/
+	
  	uint16_t linjarBuffer [LINJAR_BUFFER_LENGTH] = {0};
- 	
+ 	/*linjarBuffer receives first 100 values from matlab*/
 	int i = 0;
  	while (i < LINJAR_ARRAY)
  	{

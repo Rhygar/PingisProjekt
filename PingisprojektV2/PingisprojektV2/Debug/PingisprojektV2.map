@@ -8126,8 +8126,6 @@ Discarded input sections
  .bss.str       0x00000000       0x64 src/main.o
  .bss.cpu_irq_critical_section_counter
                 0x00000000        0x4 src/main.o
- .bss.vat_varde
-                0x00000000        0x2 src/main.o
  .bss.cpu_irq_prev_interrupt_state
                 0x00000000        0x1 src/main.o
  .debug_macro   0x00000000      0x898 src/main.o
@@ -9847,7 +9845,7 @@ OUTPUT(PingisprojektV2.elf elf32-littlearm)
  .comment       0x00000000       0x5c src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .comment       0x00000000       0x5c src/main.o
 
-.debug_info     0x00000000    0x167b1
+.debug_info     0x00000000    0x1679f
  .debug_info    0x00000000      0xec4 src/adc_io.o
  .debug_info    0x00000ec4      0x1be src/ASF/common/utils/stdio/read.o
  .debug_info    0x00001082     0x118c src/ASF/sam/drivers/adc/adc.o
@@ -9877,7 +9875,7 @@ OUTPUT(PingisprojektV2.elf elf32-littlearm)
  .debug_info    0x0001468e      0x3bd src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
  .debug_info    0x00014a4b      0x4c6 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
  .debug_info    0x00014f11      0x43f src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_info    0x00015350     0x1461 src/main.o
+ .debug_info    0x00015350     0x144f src/main.o
 
 .debug_abbrev   0x00000000     0x3d38
  .debug_abbrev  0x00000000      0x233 src/adc_io.o
@@ -10233,7 +10231,7 @@ OUTPUT(PingisprojektV2.elf elf32-littlearm)
  .debug_macro   0x0001bcd4      0x122 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_macro   0x0001bdf6      0x759 src/main.o
 
-.debug_line     0x00000000    0x17177
+.debug_line     0x00000000    0x17176
  .debug_line    0x00000000     0x103c src/adc_io.o
  .debug_line    0x0000103c      0xaca src/ASF/common/utils/stdio/read.o
  .debug_line    0x00001b06      0xe49 src/ASF/sam/drivers/adc/adc.o
@@ -10242,30 +10240,30 @@ OUTPUT(PingisprojektV2.elf elf32-littlearm)
  .debug_line    0x00004ce1     0x1054 src/pwm_io.o
  .debug_line    0x00005d35     0x104d src/task_com.o
  .debug_line    0x00006d82     0x10ca src/task_reg.o
- .debug_line    0x00007e4c     0x1105 src/uart_SR.o
- .debug_line    0x00008f51      0x450 src/ASF/thirdparty/freertos/freertos-7.3.0/source/list.o
- .debug_line    0x000093a1      0xdb6 src/ASF/thirdparty/freertos/freertos-7.3.0/source/portable/gcc/sam/port.o
- .debug_line    0x0000a157      0x4ab src/ASF/thirdparty/freertos/freertos-7.3.0/source/portable/memmang/heap_4.o
- .debug_line    0x0000a602      0x77c src/ASF/thirdparty/freertos/freertos-7.3.0/source/queue.o
- .debug_line    0x0000ad7e      0x9ee src/ASF/thirdparty/freertos/freertos-7.3.0/source/tasks.o
- .debug_line    0x0000b76c      0x4da src/ASF/thirdparty/freertos/freertos-7.3.0/source/timers.o
- .debug_line    0x0000bc46      0xac0 src/ASF/common/utils/stdio/write.o
- .debug_line    0x0000c706      0xd03 src/ASF/common/services/serial/usart_serial.o
- .debug_line    0x0000d409      0xe4d src/ASF/sam/drivers/pwm/pwm.o
- .debug_line    0x0000e256      0xc78 src/ASF/sam/drivers/uart/uart.o
- .debug_line    0x0000eece      0xc31 src/ASF/common/services/clock/sam3x/sysclk.o
- .debug_line    0x0000faff      0xadd src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_line    0x000105dc      0xcc3 src/ASF/sam/boards/arduino_due_x/init.o
- .debug_line    0x0001129f      0xe2b src/ASF/sam/drivers/pio/pio.o
- .debug_line    0x000120ca      0xb71 src/ASF/sam/drivers/pio/pio_handler.o
- .debug_line    0x00012c3b     0x105e src/ASF/sam/drivers/pmc/pmc.o
- .debug_line    0x00013c99      0xaa3 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
- .debug_line    0x0001473c      0xaed src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
- .debug_line    0x00015229      0xb08 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
- .debug_line    0x00015d31      0x399 src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_line    0x000160ca     0x10ad src/main.o
+ .debug_line    0x00007e4c     0x1104 src/uart_SR.o
+ .debug_line    0x00008f50      0x450 src/ASF/thirdparty/freertos/freertos-7.3.0/source/list.o
+ .debug_line    0x000093a0      0xdb6 src/ASF/thirdparty/freertos/freertos-7.3.0/source/portable/gcc/sam/port.o
+ .debug_line    0x0000a156      0x4ab src/ASF/thirdparty/freertos/freertos-7.3.0/source/portable/memmang/heap_4.o
+ .debug_line    0x0000a601      0x77c src/ASF/thirdparty/freertos/freertos-7.3.0/source/queue.o
+ .debug_line    0x0000ad7d      0x9ee src/ASF/thirdparty/freertos/freertos-7.3.0/source/tasks.o
+ .debug_line    0x0000b76b      0x4da src/ASF/thirdparty/freertos/freertos-7.3.0/source/timers.o
+ .debug_line    0x0000bc45      0xac0 src/ASF/common/utils/stdio/write.o
+ .debug_line    0x0000c705      0xd03 src/ASF/common/services/serial/usart_serial.o
+ .debug_line    0x0000d408      0xe4d src/ASF/sam/drivers/pwm/pwm.o
+ .debug_line    0x0000e255      0xc78 src/ASF/sam/drivers/uart/uart.o
+ .debug_line    0x0000eecd      0xc31 src/ASF/common/services/clock/sam3x/sysclk.o
+ .debug_line    0x0000fafe      0xadd src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_line    0x000105db      0xcc3 src/ASF/sam/boards/arduino_due_x/init.o
+ .debug_line    0x0001129e      0xe2b src/ASF/sam/drivers/pio/pio.o
+ .debug_line    0x000120c9      0xb71 src/ASF/sam/drivers/pio/pio_handler.o
+ .debug_line    0x00012c3a     0x105e src/ASF/sam/drivers/pmc/pmc.o
+ .debug_line    0x00013c98      0xaa3 src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+ .debug_line    0x0001473b      0xaed src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+ .debug_line    0x00015228      0xb08 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+ .debug_line    0x00015d30      0x399 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+ .debug_line    0x000160c9     0x10ad src/main.o
 
-.debug_str      0x00000000    0x6aab4
+.debug_str      0x00000000    0x6aaaa
  .debug_str     0x00000000    0x63cda src/adc_io.o
                               0x64089 (size before relaxing)
  .debug_str     0x00063cda       0x2c src/ASF/common/utils/stdio/read.o
@@ -10324,8 +10322,8 @@ OUTPUT(PingisprojektV2.elf elf32-littlearm)
                               0x5b9a2 (size before relaxing)
  .debug_str     0x0006a0d4      0x82e src/ASF/sam/utils/syscalls/gcc/syscalls.o
                                0x6103 (size before relaxing)
- .debug_str     0x0006a902      0x1b2 src/main.o
-                              0x642da (size before relaxing)
+ .debug_str     0x0006a902      0x1a8 src/main.o
+                              0x642d0 (size before relaxing)
 
 .debug_frame    0x00000000     0x33fc
  .debug_frame   0x00000000       0x2c src/adc_io.o
@@ -11595,7 +11593,6 @@ vTaskSwitchContext                                src/ASF/thirdparty/freertos/fr
 variables                                         src/main.o
                                                   src/task_reg.o
                                                   src/task_com.o
-vat_varde                                         src/main.o
 vfiprintf                                         c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libc.a(lib_a-vfiprintf.o)
 wcrtomb                                           c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libc.a(lib_a-wcrtomb.o)
 xPortGetFreeHeapSize                              src/ASF/thirdparty/freertos/freertos-7.3.0/source/portable/memmang/heap_4.o

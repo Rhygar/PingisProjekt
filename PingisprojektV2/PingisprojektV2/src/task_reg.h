@@ -2,7 +2,7 @@
  * task_reg.h
  *
  * Created: 2016-03-13 13:59:14
- *  Author: Andreas
+ * Author: John Tengvall and Andreas Langhammer
  */ 
 
 

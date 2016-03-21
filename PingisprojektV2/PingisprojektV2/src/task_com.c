@@ -1,8 +1,11 @@
 /*
  * task_com.c
  *
+ * This task sends data to matlab from the arduino that
+ * later on is used to plot in matlab.
+ *
  * Created: 2016-03-13 13:06:56
- *  Author: Andreas & John
+ * Author: Andreas Langhammer and John Tengvall
  */ 
 #include <asf.h>
 #include "variables.h"
@@ -14,7 +17,6 @@ void task_com(void *pvParameters)
 	
 	xLastWakeTime = xTaskGetTickCount();
 	uint16_t str[LINJAR_BUFFER_LENGTH] = {0};
-	
 	
 	while(1)
 	{
@@ -33,8 +35,7 @@ void task_com(void *pvParameters)
 			printf("\n");
 			xSemaphoreGive(variables);
 		}
-		
+		/* Delay task for some time*/
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
-
 	}
 }

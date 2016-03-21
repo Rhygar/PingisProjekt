@@ -2,15 +2,12 @@
  * pwm_io.h
  *
  * Created: 2016-03-13 14:58:13
- *  Author: Andreas
+ * Author: Andreas Langhammer and John Tengvall
  */ 
 
 
 #ifndef PWM_IO_H_
 #define PWM_IO_H_
-
-//#include <pwm.h>
-
 
 #define PWM_FREQUENCY		1000
 #define PWM_RESOLUTION		999

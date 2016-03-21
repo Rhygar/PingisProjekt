@@ -17,23 +17,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   6 .comment      0000005b  00000000  00000000  000109e9  2**0
                   CONTENTS, READONLY
-  7 .debug_info   000167b1  00000000  00000000  00010a44  2**0
+  7 .debug_info   0001679f  00000000  00000000  00010a44  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00003d38  00000000  00000000  000271f5  2**0
+  8 .debug_abbrev 00003d38  00000000  00000000  000271e3  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00008ff3  00000000  00000000  0002af2d  2**0
+  9 .debug_loc    00008ff3  00000000  00000000  0002af1b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_aranges 00001068  00000000  00000000  00033f20  2**0
+ 10 .debug_aranges 00001068  00000000  00000000  00033f0e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000f28  00000000  00000000  00034f88  2**0
+ 11 .debug_ranges 00000f28  00000000  00000000  00034f76  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  0001c54f  00000000  00000000  00035eb0  2**0
+ 12 .debug_macro  0001c54f  00000000  00000000  00035e9e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   00017177  00000000  00000000  000523ff  2**0
+ 13 .debug_line   00017176  00000000  00000000  000523ed  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    0006aab4  00000000  00000000  00069576  2**0
+ 14 .debug_str    0006aaaa  00000000  00000000  00069563  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  000033fc  00000000  00000000  000d402c  2**2
+ 15 .debug_frame  000033fc  00000000  00000000  000d4010  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -703,7 +703,6 @@ void task_com(void *pvParameters)
    803c8:	9303      	str	r3, [sp, #12]
    803ca:	9304      	str	r3, [sp, #16]
 	
-	
 	while(1)
 	{
 		if (xSemaphoreTake(variables, portMAX_DELAY))
@@ -712,8 +711,8 @@ void task_com(void *pvParameters)
 		{
 			itoa(meassure_val, str, 10);
    803d2:	f8df a090 	ldr.w	sl, [pc, #144]	; 80464 <task_com+0xb8>
+	xLastWakeTime = xTaskGetTickCount();
 	uint16_t str[LINJAR_BUFFER_LENGTH] = {0};
-	
 	
 	while(1)
 	{
@@ -773,13 +772,12 @@ void task_com(void *pvParameters)
    80428:	4c0b      	ldr	r4, [pc, #44]	; (80458 <task_com+0xac>)
    8042a:	47a0      	blx	r4
 		}
-		
+		/* Delay task for some time*/
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
    8042c:	f10d 0016 	add.w	r0, sp, #22
    80430:	4649      	mov	r1, r9
    80432:	4b0a      	ldr	r3, [pc, #40]	; (8045c <task_com+0xb0>)
    80434:	4798      	blx	r3
-
 	}
    80436:	e7ce      	b.n	803d6 <task_com+0x2a>
    80438:	20078dee 	.word	0x20078dee
@@ -928,9 +926,9 @@ void reg_PID(uint16_t adc_val)
 		/* the real distance. */
 		int real_distance = adc_val_in_mm[index] - interpolation;
    80522:	ebc0 0801 	rsb	r8, r0, r1
-		/*-------------------------------------------------------
-		
+		so the integral sum doesn't affect the system to much
 		---------------The regulation-process-------------------*/
+		
 		static int i_sum = 0;
 		static int o_err = 0;
 		const float dT = (float) timer/1000;
@@ -942,7 +940,7 @@ void reg_PID(uint16_t adc_val)
    80532:	493b      	ldr	r1, [pc, #236]	; (80620 <reg_PID+0x148>)
    80534:	47d0      	blx	sl
    80536:	9000      	str	r0, [sp, #0]
-		int itgr_wndp = 100000;
+		int itgr_wndp = 125000;
 		int n_err = set_val - real_distance;
    80538:	4b3a      	ldr	r3, [pc, #232]	; (80624 <reg_PID+0x14c>)
    8053a:	881d      	ldrh	r5, [r3, #0]
@@ -968,10 +966,10 @@ void reg_PID(uint16_t adc_val)
    80558:	4b36      	ldr	r3, [pc, #216]	; (80634 <reg_PID+0x15c>)
    8055a:	681f      	ldr	r7, [r3, #0]
    8055c:	f107 4700 	add.w	r7, r7, #2147483648	; 0x80000000
-		 /*----------D-REGULATOR----------*/
+		/*----------D-REGULATOR----------*/
  		float d_regler = (float) ((m_err/dT)*d_varde) * (-p_varde);
  		
-		 /*----------PID----------*/
+		/*----------PID----------*/
  		float PID_regler =  p_regler + i_regler + d_regler;
 		int control_val = (int) (offset + PID_regler);
    80560:	f8df 9110 	ldr.w	r9, [pc, #272]	; 80674 <reg_PID+0x19c>
@@ -1006,17 +1004,17 @@ void reg_PID(uint16_t adc_val)
    8058a:	47b0      	blx	r6
    8058c:	4601      	mov	r1, r0
  		
-		 /*----------D-REGULATOR----------*/
+		/*----------D-REGULATOR----------*/
  		float d_regler = (float) ((m_err/dT)*d_varde) * (-p_varde);
  		
-		 /*----------PID----------*/
+		/*----------PID----------*/
  		float PID_regler =  p_regler + i_regler + d_regler;
    8058e:	4c2d      	ldr	r4, [pc, #180]	; (80644 <reg_PID+0x16c>)
    80590:	4658      	mov	r0, fp
    80592:	47a0      	blx	r4
    80594:	4683      	mov	fp, r0
 		const float dT = (float) timer/1000;
-		int itgr_wndp = 100000;
+		int itgr_wndp = 125000;
 		int n_err = set_val - real_distance;
 		i_sum += n_err;
 		i_sum = max(min(i_sum, itgr_wndp), -itgr_wndp);
@@ -1027,7 +1025,7 @@ void reg_PID(uint16_t adc_val)
  		/*----------I-REGULATOR----------*/
  		float i_regler = (float) (((i_sum*dT)/i_varde) * (-p_varde));
  		
-		 /*----------D-REGULATOR----------*/
+		/*----------D-REGULATOR----------*/
  		float d_regler = (float) ((m_err/dT)*d_varde) * (-p_varde);
    8059a:	1b40      	subs	r0, r0, r5
    8059c:	47c8      	blx	r9
@@ -1041,7 +1039,7 @@ void reg_PID(uint16_t adc_val)
    805ac:	47b0      	blx	r6
    805ae:	4601      	mov	r1, r0
  		
-		 /*----------PID----------*/
+		/*----------PID----------*/
  		float PID_regler =  p_regler + i_regler + d_regler;
    805b0:	4658      	mov	r0, fp
    805b2:	47a0      	blx	r4
@@ -1110,8 +1108,8 @@ void reg_PID(uint16_t adc_val)
    80620:	447a0000 	.word	0x447a0000
    80624:	20078dec 	.word	0x20078dec
    80628:	20070aa8 	.word	0x20070aa8
-   8062c:	000186a0 	.word	0x000186a0
-   80630:	fffe7960 	.word	0xfffe7960
+   8062c:	0001e848 	.word	0x0001e848
+   80630:	fffe17b8 	.word	0xfffe17b8
    80634:	20078df0 	.word	0x20078df0
    80638:	2007014c 	.word	0x2007014c
    8063c:	00082ca5 	.word	0x00082ca5
@@ -1131,10 +1129,10 @@ void reg_PID(uint16_t adc_val)
    80674:	00082bfd 	.word	0x00082bfd
 
 00080678 <task_reg>:
-#include "pwm_io.h"
-#include "FIRkoef.h"
-#include "task_reg.h"
-
+/************************************************************************/
+/* task_reg first filters the analog signal then calculates the PID-value
+   among other thing also limits the control_val, the value sent to matlab.                                                                  */
+/************************************************************************/
 void task_reg(void *pvParameters)
 {
    80678:	b570      	push	{r4, r5, r6, lr}
@@ -1172,7 +1170,7 @@ void task_reg(void *pvParameters)
    8069c:	4620      	mov	r0, r4
    8069e:	4b0b      	ldr	r3, [pc, #44]	; (806cc <task_reg+0x54>)
    806a0:	4798      	blx	r3
-		
+		/* Call functions*/
 		adc_val = filter(adc_val);
    806a2:	4b0b      	ldr	r3, [pc, #44]	; (806d0 <task_reg+0x58>)
    806a4:	4798      	blx	r3
@@ -1447,7 +1445,7 @@ static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
 void matlab_values(void){
    80820:	b5f0      	push	{r4, r5, r6, r7, lr}
    80822:	b087      	sub	sp, #28
-	/*linjarBuffer receives first 100 values from matlab*/
+	
  	uint16_t linjarBuffer [LINJAR_BUFFER_LENGTH] = {0};
    80824:	2300      	movs	r3, #0
    80826:	9301      	str	r3, [sp, #4]
@@ -1457,7 +1455,7 @@ void matlab_values(void){
    8082e:	9305      	str	r3, [sp, #20]
    80830:	4c1c      	ldr	r4, [pc, #112]	; (808a4 <matlab_values+0x84>)
    80832:	f104 07c8 	add.w	r7, r4, #200	; 0xc8
- 	
+ 	/*linjarBuffer receives first 100 values from matlab*/
 	int i = 0;
  	while (i < LINJAR_ARRAY)
  	{
@@ -1466,7 +1464,7 @@ void matlab_values(void){
 		adc_val_in_mm[i] = atoi(linjarBuffer);
    80838:	4d1c      	ldr	r5, [pc, #112]	; (808ac <matlab_values+0x8c>)
  	uint16_t linjarBuffer [LINJAR_BUFFER_LENGTH] = {0};
- 	
+ 	/*linjarBuffer receives first 100 values from matlab*/
 	int i = 0;
  	while (i < LINJAR_ARRAY)
  	{
@@ -1478,9 +1476,9 @@ void matlab_values(void){
    80840:	47a8      	blx	r5
    80842:	f824 0f02 	strh.w	r0, [r4, #2]!
 void matlab_values(void){
-	/*linjarBuffer receives first 100 values from matlab*/
+	
  	uint16_t linjarBuffer [LINJAR_BUFFER_LENGTH] = {0};
- 	
+ 	/*linjarBuffer receives first 100 values from matlab*/
 	int i = 0;
  	while (i < LINJAR_ARRAY)
    80846:	42bc      	cmp	r4, r7
@@ -9026,9 +9024,9 @@ extern int _lseek(int file, int ptr, int dir)
    82996:	4770      	bx	lr
 
 00082998 <main>:
-uint16_t timer;
-int offset = 500;
-
+Setting tasks priority	and start the schedular.											
+																	    */
+/************************************************************************/
 
 int main (void)
 {

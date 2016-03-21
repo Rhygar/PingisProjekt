@@ -1,8 +1,13 @@
 /*
  * variables.h
+ * 
+ * Holds variables to sync from different files.
+ * LINJAR_BUFFER_LENGTH is the length of the string while 
+ * receiving and sending values to/from matlab.
+ * LINJAR_ARRAY holds the index first transfered from matlab.
  *
  * Created: 2016-03-13 13:27:01
- *  Author: Andreas & John
+ * Author: John Tengvall and Andreas Langhammer
  */ 
 
 

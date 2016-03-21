@@ -2,7 +2,7 @@
  * uart_SR.h
  *
  * Created: 2016-03-12 17:43:16
- *  Author: Andreas Langhammer
+ *  Author: John Tengvall and Andreas Langhammer
  */ 
 
 

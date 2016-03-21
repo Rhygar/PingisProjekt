@@ -1,8 +1,9 @@
 /*
  * adc_io.c
- *
+ * Function initializes to receive adc values
+ * 
  * Created: 2016-03-13 15:30:57
- *  Author: Andreas
+ * Author: John Tengvall and Andreas Langhammer
  */ 
 #include <asf.h>
 #include "adc_io.h"

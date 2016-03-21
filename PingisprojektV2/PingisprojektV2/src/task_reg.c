@@ -5,14 +5,17 @@
  * the ping-pong ball to the setpoint.
  *
  * Created: 2016-03-13 13:59:27
- * Author: Andreas
+ * Author: Andreas Langhammer and John Tengvall
  */ 
 #include <asf.h>
 #include "variables.h"
 #include "pwm_io.h"
 #include "FIRkoef.h"
 #include "task_reg.h"
-
+/************************************************************************/
+/* task_reg first filters the analog signal then calculates the PID-value
+   among other thing also limits the control_val, the value sent to matlab.                                                                  */
+/************************************************************************/
 void task_reg(void *pvParameters)
 {
 	portTickType xLastWakeTime;
@@ -24,7 +27,7 @@ void task_reg(void *pvParameters)
  		adc_start(ADC);
  		while ((adc_get_status(ADC) & 0x1<<24) == 0);
 		int adc_val = adc_get_latest_value(ADC);
-		
+		/* Call functions*/
 		adc_val = filter(adc_val);
 		reg_PID (adc_val);
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
@@ -65,12 +68,14 @@ void reg_PID(uint16_t adc_val)
 		/* the real distance. */
 		int real_distance = adc_val_in_mm[index] - interpolation;
 		/*-------------------------------------------------------
-		
+		Sets integral windup to a max value if the ball gets stucked
+		so the integral sum doesn't affect the system to much
 		---------------The regulation-process-------------------*/
+		
 		static int i_sum = 0;
 		static int o_err = 0;
 		const float dT = (float) timer/1000;
-		int itgr_wndp = 100000;
+		int itgr_wndp = 125000;
 		int n_err = set_val - real_distance;
 		i_sum += n_err;
 		i_sum = max(min(i_sum, itgr_wndp), -itgr_wndp);
@@ -82,14 +87,15 @@ void reg_PID(uint16_t adc_val)
  		/*----------I-REGULATOR----------*/
  		float i_regler = (float) (((i_sum*dT)/i_varde) * (-p_varde));
  		
-		 /*----------D-REGULATOR----------*/
+		/*----------D-REGULATOR----------*/
  		float d_regler = (float) ((m_err/dT)*d_varde) * (-p_varde);
  		
-		 /*----------PID----------*/
+		/*----------PID----------*/
  		float PID_regler =  p_regler + i_regler + d_regler;
 		int control_val = (int) (offset + PID_regler);
 		/*--------------------------------------*/ 	
- 	 	if (control_val > 999)
+ 	 	
+		if (control_val > 999)
 		{
 			control_val = 999;
 		}

@@ -16,6 +16,8 @@
 /* General type conversion for MATLAB generated C-code  */
 //#include "tmwtypes.h"
 /* 
+ * Values used to the FIR filter
+ *
  * Expected path to tmwtypes.h 
  * C:\Matlab 2015b\extern\include\tmwtypes.h 
  */
