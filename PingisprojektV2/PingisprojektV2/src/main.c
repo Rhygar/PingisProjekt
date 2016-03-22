@@ -1,6 +1,6 @@
 /**
  * Main file to declare all global variables, set all PINs for the use of the 
- * motorshield and distrebute a semaphore que.
+ * motorshield and distribute a semaphore que.
  *
  * Author: Andreas Langhammer and John Tengvall
  */
@@ -38,9 +38,23 @@ Start to initialize all reacquired components then setting pin_levels and
 direction of pins for the motorshield.
 Calls matlab_values() to start receiving values from matlab, 
 then starts a que for the tasks.
-Setting tasks priority	and start the schedular.											
+Setting tasks priority	and start the schedule.											
 																	    */
 /************************************************************************/
+
+void configure_console(void)
+/* Enables feedback through the USB-cable back to terminal within Atmel Studio */
+{
+	const usart_serial_options_t uart_serial_options = {
+		.baudrate = CONF_UART_BAUDRATE,
+		.paritytype = CONF_UART_PARITY
+	};
+
+	/* Configure console UART. */
+	sysclk_enable_peripheral_clock(CONSOLE_UART_ID);
+	stdio_serial_init(CONF_UART, &uart_serial_options);
+}
+
 
 int main (void)
 {
@@ -64,3 +78,4 @@ int main (void)
 	xTaskCreate(task_reg, (const signed char * const) "task_reg", TASK_COM_STACKSIZE, NULL, 2, NULL); 
 	vTaskStartScheduler();
 }
+

@@ -9,9 +9,6 @@
 #ifndef UART_SR_H_
 #define UART_SR_H_
 
-
-void configure_console(void);
 void matlab_values(void);
-
 
 #endif /* UART_SR_H_ */

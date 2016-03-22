@@ -21,7 +21,7 @@
  * Expected path to tmwtypes.h 
  * C:\Matlab 2015b\extern\include\tmwtypes.h 
  */
-#define BL  4
+#define M  4
 float B[4] = {
    -0.09641229823382,   0.5875566212925,   0.5875566212925, -0.09641229823382
 };
