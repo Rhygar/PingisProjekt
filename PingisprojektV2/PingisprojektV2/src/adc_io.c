@@ -10,7 +10,7 @@
 
 void adc_setup()
 {
-	pmc_enable_periph_clk(ID_ADC);
+	pmc_enable_periph_clk(ID_ADC);							
 	adc_init(ADC, sysclk_get_main_hz(), 20000000, 0);		// Initialize ADC
 	adc_configure_timing(ADC, 0, 0, 0);
 	adc_set_resolution(ADC,ADC_MR_LOWRES);

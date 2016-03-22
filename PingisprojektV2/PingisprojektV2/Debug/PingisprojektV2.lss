@@ -27,13 +27,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  11 .debug_ranges 00000f28  00000000  00000000  00034e24  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  0001c54f  00000000  00000000  00035d4c  2**0
+ 12 .debug_macro  0001c555  00000000  00000000  00035d4c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   0001716f  00000000  00000000  0005229b  2**0
+ 13 .debug_line   00017171  00000000  00000000  000522a1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    0006aa83  00000000  00000000  0006940a  2**0
+ 14 .debug_str    0006aab4  00000000  00000000  00069412  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  000033fc  00000000  00000000  000d3e90  2**2
+ 15 .debug_frame  000033fc  00000000  00000000  000d3ec8  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -144,7 +144,7 @@ Disassembly of section .text:
 void adc_setup()
 {
    80150:	b538      	push	{r3, r4, r5, lr}
-	pmc_enable_periph_clk(ID_ADC);
+	pmc_enable_periph_clk(ID_ADC);							
    80152:	2025      	movs	r0, #37	; 0x25
    80154:	4b0e      	ldr	r3, [pc, #56]	; (80190 <adc_setup+0x40>)
    80156:	4798      	blx	r3
@@ -576,9 +576,9 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE void __enable_irq(void)
 
 00080308 <pwm_set_duty_cycle>:
 
-/************************************************************************/
-/* Set duty cycle of PWM signal                                         */
-/************************************************************************/
+}
+
+/* Set duty cycle of PWM signal*/
 void pwm_set_duty_cycle(uint32_t duty_cycle)
 {
    80308:	b508      	push	{r3, lr}
@@ -603,7 +603,7 @@ int pwm_setup(void)
 {
    80324:	b530      	push	{r4, r5, lr}
    80326:	b085      	sub	sp, #20
-	
+	/*Enable pwmclock*/
 	if (pmc_enable_periph_clk(ID_PWM) == 0) {
    80328:	2024      	movs	r0, #36	; 0x24
    8032a:	4b15      	ldr	r3, [pc, #84]	; (80380 <pwm_setup+0x5c>)
@@ -651,6 +651,7 @@ int pwm_setup(void)
    80366:	f44f 3280 	mov.w	r2, #65536	; 0x10000
    8036a:	4b0d      	ldr	r3, [pc, #52]	; (803a0 <pwm_setup+0x7c>)
    8036c:	4798      	blx	r3
+		/*Enable PWM*/
 		pwm_channel_enable(PWM, PWM_CHANNEL_0);
    8036e:	4628      	mov	r0, r5
    80370:	4621      	mov	r1, r4
@@ -681,13 +682,13 @@ int pwm_setup(void)
  */ 
 #include <asf.h>
 #include "variables.h"
-
+/*Task that handles the communication from matlab*/
 void task_com(void *pvParameters)
 {
    803ac:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
    803b0:	b086      	sub	sp, #24
 	portTickType xLastWakeTime;
-	const portTickType xTimeIncrement = timer;
+	const portTickType xTimeIncrement = timer; //Timer arrives from matlab
    803b2:	4b21      	ldr	r3, [pc, #132]	; (80438 <task_com+0x8c>)
    803b4:	f8b3 9000 	ldrh.w	r9, [r3]
 	
@@ -702,20 +703,22 @@ void task_com(void *pvParameters)
    803c6:	9302      	str	r3, [sp, #8]
    803c8:	9303      	str	r3, [sp, #12]
    803ca:	9304      	str	r3, [sp, #16]
-	
+	/*runs continuously until task is stopped */
 	while(1)
 	{
+		
 		if (xSemaphoreTake(variables, portMAX_DELAY))
    803cc:	4d1c      	ldr	r5, [pc, #112]	; (80440 <task_com+0x94>)
    803ce:	f8df 8090 	ldr.w	r8, [pc, #144]	; 80460 <task_com+0xb4>
 		{
+			/*Sends values to matlab from integer to ascii*/
 			itoa(meassure_val, str, 10);
    803d2:	f8df a090 	ldr.w	sl, [pc, #144]	; 80464 <task_com+0xb8>
-	xLastWakeTime = xTaskGetTickCount();
 	uint16_t str[LINJAR_BUFFER_LENGTH] = {0};
-	
+	/*runs continuously until task is stopped */
 	while(1)
 	{
+		
 		if (xSemaphoreTake(variables, portMAX_DELAY))
    803d6:	6828      	ldr	r0, [r5, #0]
    803d8:	2100      	movs	r1, #0
@@ -724,6 +727,7 @@ void task_com(void *pvParameters)
    803e0:	47c0      	blx	r8
    803e2:	b318      	cbz	r0, 8042c <task_com+0x80>
 		{
+			/*Sends values to matlab from integer to ascii*/
 			itoa(meassure_val, str, 10);
    803e4:	f8ba 0000 	ldrh.w	r0, [sl]
    803e8:	4669      	mov	r1, sp
@@ -927,8 +931,7 @@ void reg_PID(uint16_t adc_val)
 		/* the real distance. */
 		int real_distance = adc_val_in_mm[index] - new_datapoints;
    8052c:	1b0d      	subs	r5, r1, r4
-		/*---------------The regulation-process-------------------*/
-		int n_err = set_val - real_distance;
+		int n_err = set_val - real_distance;//´New error
    8052e:	4b3b      	ldr	r3, [pc, #236]	; (8061c <reg_PID+0x144>)
    80530:	881c      	ldrh	r4, [r3, #0]
    80532:	1b64      	subs	r4, r4, r5
@@ -936,12 +939,13 @@ void reg_PID(uint16_t adc_val)
    80534:	4b3a      	ldr	r3, [pc, #232]	; (80620 <reg_PID+0x148>)
    80536:	681b      	ldr	r3, [r3, #0]
    80538:	4423      	add	r3, r4
+		
 		if (i_sum > end_up)
    8053a:	4a3a      	ldr	r2, [pc, #232]	; (80624 <reg_PID+0x14c>)
    8053c:	4293      	cmp	r3, r2
    8053e:	dd02      	ble.n	80546 <reg_PID+0x6e>
 		{
-			i_sum = end_up;
+			i_sum = end_up; //if the integral is higher then 125000 then it is set to 125000
    80540:	4b37      	ldr	r3, [pc, #220]	; (80620 <reg_PID+0x148>)
    80542:	601a      	str	r2, [r3, #0]
    80544:	e008      	b.n	80558 <reg_PID+0x80>
@@ -950,40 +954,40 @@ void reg_PID(uint16_t adc_val)
    80546:	4a38      	ldr	r2, [pc, #224]	; (80628 <reg_PID+0x150>)
    80548:	4293      	cmp	r3, r2
    8054a:	db02      	blt.n	80552 <reg_PID+0x7a>
+		/* New datapoints to get more realistic values. */
 		int new_datapoints = ((adc_val_in_mm[index] - adc_val_in_mm[index+1]) *(adc_val % 10))/10; 
 		/* the real distance. */
 		int real_distance = adc_val_in_mm[index] - new_datapoints;
-		/*---------------The regulation-process-------------------*/
-		int n_err = set_val - real_distance;
+		int n_err = set_val - real_distance;//´New error
 		i_sum += n_err;
    8054c:	4a34      	ldr	r2, [pc, #208]	; (80620 <reg_PID+0x148>)
    8054e:	6013      	str	r3, [r2, #0]
    80550:	e002      	b.n	80558 <reg_PID+0x80>
 		{
-			i_sum = end_up;
+			i_sum = end_up; //if the integral is higher then 125000 then it is set to 125000
 		}
 		else if (i_sum < (-end_up))
 		{
-			i_sum = (-end_up);
+			i_sum = (-end_up);//if the integral is below -125000 then it is set to -125000
    80552:	4a35      	ldr	r2, [pc, #212]	; (80628 <reg_PID+0x150>)
    80554:	4b32      	ldr	r3, [pc, #200]	; (80620 <reg_PID+0x148>)
    80556:	601a      	str	r2, [r3, #0]
-		
-		int m_err = o_err - n_err;
+		int m_err = o_err - n_err; //median error used in the derivate part of the regulation process. 
  		
-		/*----------PID----------*/
+		/*----------PID-regulation-------------------------*/
+		/*The PID regulation containing proportional,integrated and derivated part.*/
 		float PID_regler = (float) ((n_err) + ((i_sum*dT)/i_varde) + ((m_err/dT)*d_varde)) *(-p_varde); 
-		int control_val = (int) (offset + PID_regler); //
+		int control_val = (int) (offset + PID_regler); //Adds an offset to the PID-regulation to prevent wrong distance
    80558:	4e34      	ldr	r6, [pc, #208]	; (8062c <reg_PID+0x154>)
    8055a:	4b35      	ldr	r3, [pc, #212]	; (80630 <reg_PID+0x158>)
    8055c:	6818      	ldr	r0, [r3, #0]
    8055e:	47b0      	blx	r6
    80560:	9001      	str	r0, [sp, #4]
-		}
 		
-		int m_err = o_err - n_err;
+		int m_err = o_err - n_err; //median error used in the derivate part of the regulation process. 
  		
-		/*----------PID----------*/
+		/*----------PID-regulation-------------------------*/
+		/*The PID regulation containing proportional,integrated and derivated part.*/
 		float PID_regler = (float) ((n_err) + ((i_sum*dT)/i_varde) + ((m_err/dT)*d_varde)) *(-p_varde); 
    80562:	4620      	mov	r0, r4
    80564:	47b0      	blx	r6
@@ -1005,14 +1009,15 @@ void reg_PID(uint16_t adc_val)
    80588:	4683      	mov	fp, r0
 		else if (i_sum < (-end_up))
 		{
-			i_sum = (-end_up);
+			i_sum = (-end_up);//if the integral is below -125000 then it is set to -125000
 		}
 		
-		int m_err = o_err - n_err;
+		int m_err = o_err - n_err; //median error used in the derivate part of the regulation process. 
    8058a:	4b2c      	ldr	r3, [pc, #176]	; (8063c <reg_PID+0x164>)
    8058c:	6818      	ldr	r0, [r3, #0]
  		
-		/*----------PID----------*/
+		/*----------PID-regulation-------------------------*/
+		/*The PID regulation containing proportional,integrated and derivated part.*/
 		float PID_regler = (float) ((n_err) + ((i_sum*dT)/i_varde) + ((m_err/dT)*d_varde)) *(-p_varde); 
    8058e:	1b00      	subs	r0, r0, r4
    80590:	47b0      	blx	r6
@@ -1029,7 +1034,7 @@ void reg_PID(uint16_t adc_val)
    805a6:	f101 4100 	add.w	r1, r1, #2147483648	; 0x80000000
    805aa:	47c0      	blx	r8
    805ac:	4601      	mov	r1, r0
-		int control_val = (int) (offset + PID_regler); //
+		int control_val = (int) (offset + PID_regler); //Adds an offset to the PID-regulation to prevent wrong distance
    805ae:	9801      	ldr	r0, [sp, #4]
    805b0:	47b8      	blx	r7
    805b2:	4b25      	ldr	r3, [pc, #148]	; (80648 <reg_PID+0x170>)
@@ -1044,11 +1049,11 @@ void reg_PID(uint16_t adc_val)
  		}
 			  
 		/*-----------WRITE TO ARDUINO-----------*/
-		/* Sends the control-value to matlab then gives away the semaphore*/
+		
 		pwm_set_duty_cycle(control_val);
    805c6:	4b21      	ldr	r3, [pc, #132]	; (8064c <reg_PID+0x174>)
    805c8:	4798      	blx	r3
-		
+		/* Sends the control-value,new error and distance to the ball to matlab then gives away the semaphore*/
 		if (xSemaphoreTake(variables, portMAX_DELAY))
    805ca:	4b21      	ldr	r3, [pc, #132]	; (80650 <reg_PID+0x178>)
    805cc:	6818      	ldr	r0, [r3, #0]
@@ -1154,14 +1159,16 @@ void task_reg(void *pvParameters)
    80690:	4620      	mov	r0, r4
    80692:	4b0b      	ldr	r3, [pc, #44]	; (806c0 <task_reg+0x54>)
    80694:	4798      	blx	r3
-		/* Call functions*/
+		/*Calls the FIR-filter */
 		adc_val = filter(adc_val);
    80696:	4b0b      	ldr	r3, [pc, #44]	; (806c4 <task_reg+0x58>)
    80698:	4798      	blx	r3
+		/*calls PID-regulator*/
 		reg_PID (adc_val);
    8069a:	b280      	uxth	r0, r0
    8069c:	4b0a      	ldr	r3, [pc, #40]	; (806c8 <task_reg+0x5c>)
    8069e:	4798      	blx	r3
+		/*Delay task for some time*/
 		vTaskDelayUntil(&xLastWakeTime, xTimeIncrement);
    806a0:	f10d 0006 	add.w	r0, sp, #6
    806a4:	4631      	mov	r1, r6
@@ -8919,11 +8926,11 @@ static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
    8290c:	400a4000 	.word	0x400a4000
 
 00082910 <configure_console>:
+Setting tasks priority	and start the schedule.											
 																	    */
 /************************************************************************/
-
-void configure_console(void)
 /* Enables feedback through the USB-cable back to terminal within Atmel Studio */
+void configure_console(void)
 {
    82910:	b530      	push	{r4, r5, lr}
    82912:	b085      	sub	sp, #20
@@ -9017,6 +9024,7 @@ int main (void)
 {
    8298c:	b530      	push	{r4, r5, lr}
    8298e:	b085      	sub	sp, #20
+	/*Initialize system*/
 	sysclk_init();
    82990:	4b28      	ldr	r3, [pc, #160]	; (82a34 <main+0xa8>)
    82992:	4798      	blx	r3
@@ -9098,14 +9106,16 @@ int main (void)
 	if (level) {
 		base->PIO_SODR = arch_ioport_pin_to_mask(pin);
    829da:	631a      	str	r2, [r3, #48]	; 0x30
-	ioport_set_pin_dir(PWM_PIN, IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(PWM_PIN, IOPORT_PIN_LEVEL_LOW);
 	ioport_set_pin_dir(DIRECTION_PIN, IOPORT_DIR_OUTPUT);
 	ioport_set_pin_level(DIRECTION_PIN, IOPORT_PIN_LEVEL_HIGH);
 	
+	/*Reads values from matlab*/
 	matlab_values();
    829dc:	4b1d      	ldr	r3, [pc, #116]	; (82a54 <main+0xc8>)
    829de:	4798      	blx	r3
+	
+	/*Creates a que for semaphore*/
 	vSemaphoreCreateBinary(variables);
    829e0:	2001      	movs	r0, #1
    829e2:	2100      	movs	r1, #0
@@ -9121,6 +9131,7 @@ int main (void)
    829f6:	4c1a      	ldr	r4, [pc, #104]	; (82a60 <main+0xd4>)
    829f8:	47a0      	blx	r4
 	
+	/*Creates two task with different priorities */
 	xTaskCreate(task_com, (const signed char * const) "task_com", TASK_COM_STACKSIZE, NULL, 1, NULL);
    829fa:	2301      	movs	r3, #1
    829fc:	9300      	str	r3, [sp, #0]
@@ -9134,7 +9145,7 @@ int main (void)
    82a0e:	4623      	mov	r3, r4
    82a10:	4d16      	ldr	r5, [pc, #88]	; (82a6c <main+0xe0>)
    82a12:	47a8      	blx	r5
-	xTaskCreate(task_reg, (const signed char * const) "task_reg", TASK_COM_STACKSIZE, NULL, 2, NULL); 
+	xTaskCreate(task_reg, (const signed char * const) "task_reg", TASK_REG_STACKSIZE, NULL, 2, NULL); 
    82a14:	2302      	movs	r3, #2
    82a16:	9300      	str	r3, [sp, #0]
    82a18:	9401      	str	r4, [sp, #4]
@@ -9145,10 +9156,11 @@ int main (void)
    82a22:	f44f 7200 	mov.w	r2, #512	; 0x200
    82a26:	4623      	mov	r3, r4
    82a28:	47a8      	blx	r5
+	
+	/*Starts Free RTOS and runs until stopped*/
 	vTaskStartScheduler();
    82a2a:	4b13      	ldr	r3, [pc, #76]	; (82a78 <main+0xec>)
    82a2c:	4798      	blx	r3
-}
    82a2e:	4620      	mov	r0, r4
    82a30:	b005      	add	sp, #20
    82a32:	bd30      	pop	{r4, r5, pc}

@@ -13,7 +13,7 @@ static pwm_channel_t pwm_instance;
 
 int pwm_setup(void)
 {
-	
+	/*Enable pwmclock*/
 	if (pmc_enable_periph_clk(ID_PWM) == 0) {
 		pwm_clock_t pwm_clock = {
 			.ul_clka = PWM_FREQUENCY * PWM_RESOLUTION,
@@ -29,15 +29,14 @@ int pwm_setup(void)
 		pwm_instance.channel = PWM_CHANNEL_0;
 		pwm_channel_init(PWM, &pwm_instance);
 		pio_set_peripheral(PWM_PIO, PWM_PIO_PERIPHERAL, PWM_PIO_PIN);
+		/*Enable PWM*/
 		pwm_channel_enable(PWM, PWM_CHANNEL_0);
 		pwm_set_duty_cycle(0);
 	}
 
 }
 
-/************************************************************************/
-/* Set duty cycle of PWM signal                                         */
-/************************************************************************/
+/* Set duty cycle of PWM signal*/
 void pwm_set_duty_cycle(uint32_t duty_cycle)
 {
 	pwm_channel_update_duty(PWM, &pwm_instance, duty_cycle);

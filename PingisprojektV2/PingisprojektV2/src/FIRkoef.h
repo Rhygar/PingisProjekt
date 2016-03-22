@@ -22,6 +22,7 @@
  * C:\Matlab 2015b\extern\include\tmwtypes.h 
  */
 #define M  4
+/* Constants made from FDATOOL in matlab. Used in the FIR-filter */
 float B[4] = {
    -0.09641229823382,   0.5875566212925,   0.5875566212925, -0.09641229823382
 };

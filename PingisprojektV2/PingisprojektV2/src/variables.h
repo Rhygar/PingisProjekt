@@ -27,6 +27,7 @@ extern uint16_t timer;
 extern int offset;
 
 #define TASK_COM_STACKSIZE	(2048/sizeof(portSTACK_TYPE))
+#define TASK_REG_STACKSIZE	(2048/sizeof(portSTACK_TYPE))
 #define  LINJAR_BUFFER_LENGTH 10
 #define  LINJAR_ARRAY 100
 #endif /* VARIABLES_H_ */

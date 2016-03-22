@@ -9,19 +9,21 @@
  */ 
 #include <asf.h>
 #include "variables.h"
-
+/*Task that handles the communication from matlab*/
 void task_com(void *pvParameters)
 {
 	portTickType xLastWakeTime;
-	const portTickType xTimeIncrement = timer;
+	const portTickType xTimeIncrement = timer; //Timer arrives from matlab
 	
 	xLastWakeTime = xTaskGetTickCount();
 	uint16_t str[LINJAR_BUFFER_LENGTH] = {0};
-	
+	/*runs continuously until task is stopped */
 	while(1)
 	{
+		
 		if (xSemaphoreTake(variables, portMAX_DELAY))
 		{
+			/*Sends values to matlab from integer to ascii*/
 			itoa(meassure_val, str, 10);
 			printf(str);
 			printf("\n");
